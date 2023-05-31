@@ -12,3 +12,4 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create
+key: javadocsdsadsafgsdag4aergdfsagdfgfdgrgredasdasdsadsa
