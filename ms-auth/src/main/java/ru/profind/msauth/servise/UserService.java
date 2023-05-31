@@ -31,6 +31,7 @@ public class UserService
                             .username(request.getUsername())
                             .password(passwordEncoder.encode(request.getPassword()))
                             .build());
+                    result.set(true);
                 }
         );
         return result.get();
