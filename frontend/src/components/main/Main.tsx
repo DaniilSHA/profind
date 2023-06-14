@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './Main.module.css';
+import {useNavigate} from "react-router-dom";
 
 const Main = () => {
-
-
+    const navigate = useNavigate();
+    const loginHandler = () => {
+        navigate ('/login');
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -57,7 +60,7 @@ const Main = () => {
                 </div>
             </div>
             <div className={styles.footer}>
-                <button className={styles.btn}>Логин</button>
+                <button className={styles.btn} onClick={loginHandler}>Логин</button>
                 <button className={styles.btn}>Регистрация</button>
             </div>
         </div>

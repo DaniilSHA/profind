@@ -2,6 +2,7 @@
 
 *, *:after, *:before {
     box-sizing: border-box;
+    margin: 0;
 }
 
 .login {
@@ -71,4 +72,15 @@
 .btn:hover {
     box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
     transition: 0.3s all;
+}
+
+.bg {
+    position: absolute;
+    width:100%;
+    background:#000;
+    opacity:0.5;
+    height: 100vh;
+}
+body {
+    overflow: hidden;
 }
