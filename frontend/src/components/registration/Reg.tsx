@@ -6,11 +6,10 @@ import {findAllByDisplayValue} from "@testing-library/react";
 import {useNavigate} from "react-router-dom";
 import validation from "../validation/validation";
 
-function Reg(props: any) {
+function Reg() {
     const navigate = useNavigate();
     const backHandler = () => {
         navigate('/');
-        props.isReg();
     }
 
     return (
@@ -25,7 +24,7 @@ function Reg(props: any) {
                         email: '',
                     }}
                     onSubmit={values => {
-                        console.log('submit', values);
+                        console.log('Регистрация прошла успешно.');
                     }}
                 >
                     {({errors, touched}) => (

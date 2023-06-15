@@ -1,44 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Main.module.css';
-import {useLocation, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Login from "../login/Login";
 import Reg from "../registration/Reg";
 
 const Main = () => {
     const navigate = useNavigate();
-    const currentUrl = useLocation();
-    const [auth, setAuth] = useState(false);
-    const [reg, setReg] = useState(false);
     const loginHandler = (): void => {
         navigate('/login');
-        isAuth();
     }
 
     const regHandler = (): void => {
         navigate('/reg');
-        isReg();
     }
-    const isAuth = (): void => {
-        setAuth(!auth);
-    }
-
-    const isReg = (): void => {
-        setReg(!reg);
-    }
-    console.log(typeof(currentUrl.pathname));
-
     return (
         <>
-            {reg &&
-                <div><Reg
-                    isReg={isReg}/>
-                </div>}
-
-            {auth &&
-                <div><Login
-                    isAuth={isAuth}/>
-                </div>}
-
+            <Outlet />
             <div className={styles.wrapper}>
                 <div className={styles.header}>
                     <div className={styles.logo}

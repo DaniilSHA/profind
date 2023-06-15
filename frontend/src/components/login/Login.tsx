@@ -6,11 +6,10 @@ import {findAllByDisplayValue} from "@testing-library/react";
 import {useNavigate} from "react-router-dom";
 import validation from "../validation/validation";
 
-function Login(props: any) {
+function Login() {
     const navigate = useNavigate();
     const backHandler = () => {
         navigate('/');
-        props.isAuth();
     }
 
 
