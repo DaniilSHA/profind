@@ -1,18 +1,17 @@
 import React from 'react';
-import styles from './Login.module.css';
+import styles from './Reg.module.css';
 import {Formik, Form, Field} from 'formik';
 import * as yup from 'yup';
 import {findAllByDisplayValue} from "@testing-library/react";
 import {useNavigate} from "react-router-dom";
 import validation from "../validation/validation";
 
-function Login(props: any) {
+function Reg(props: any) {
     const navigate = useNavigate();
     const backHandler = () => {
         navigate('/');
-        props.isAuth();
+        props.isReg();
     }
-
 
     return (
         <>
@@ -23,6 +22,7 @@ function Login(props: any) {
                     initialValues={{
                         username: '',
                         password: '',
+                        email: '',
                     }}
                     onSubmit={values => {
                         console.log('submit', values);
@@ -31,7 +31,7 @@ function Login(props: any) {
                     {({errors, touched}) => (
                         <Form className={styles.form}>
                             <label className={styles.title}>
-                                Вход
+                                Регистрация
                             </label>
 
                             <label className={styles.formLabel}>
@@ -61,11 +61,25 @@ function Login(props: any) {
                                 </div>
                             )}
 
+                            <label className={styles.formLabel}>
+                                Email:
+                            </label>
+                            <Field
+                                className={styles.formField}
+                                name="email"
+                                type="email"
+                            />
+                            {errors.email && touched.email && (
+                                <div className={styles.formError}>
+                                    {errors.email}
+                                </div>
+                            )}
+
                             <button
                                 className={styles.btn}
                                 type="submit"
                             >
-                                Войти
+                                Зарегистрироваться
                             </button>
                         </Form>
                     )}
@@ -75,4 +89,4 @@ function Login(props: any) {
     );
 }
 
-export default Login;
+export default Reg;
