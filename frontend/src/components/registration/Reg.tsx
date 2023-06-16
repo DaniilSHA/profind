@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Reg.module.css';
-import {Formik, Form, Field} from 'formik';
-import * as yup from 'yup';
-import {findAllByDisplayValue} from "@testing-library/react";
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {useNavigate} from "react-router-dom";
-import validation from "../validation/validation";
+import validation from "../../validation/validation";
+
 
 function Reg() {
     const navigate = useNavigate();
+
+    const roles = ['Выберите роль', 'Front-end', 'Java', 'Python'];
+    const data = ['', 'Front-end', 'Java', 'Python'];
+
     const backHandler = () => {
         navigate('/');
     }
-
     return (
         <>
             <div className={styles.bg} onClick={backHandler}></div>
@@ -21,10 +23,10 @@ function Reg() {
                     initialValues={{
                         username: '',
                         password: '',
-                        email: '',
+                        role: '',
                     }}
                     onSubmit={values => {
-                        console.log('Регистрация прошла успешно.');
+                        console.log(values);
                     }}
                 >
                     {({errors, touched}) => (
@@ -49,28 +51,31 @@ function Reg() {
                             <label className={styles.formLabel}>
                                 Пароль:
                             </label>
+
                             <Field
                                 className={styles.formField}
                                 name="password"
                                 type="password"
                             />
+
                             {errors.password && touched.password && (
                                 <div className={styles.formError}>
                                     {errors.password}
                                 </div>
                             )}
 
-                            <label className={styles.formLabel}>
-                                Email:
-                            </label>
-                            <Field
-                                className={styles.formField}
-                                name="email"
-                                type="email"
-                            />
-                            {errors.email && touched.email && (
+                            <label className={styles.formLabel}>Роль:</label>
+                            <Field as="select" name="role" className={styles.formField}>
+                                {roles.map((role, index) => (
+                                    <option key={index} value={data[index]}>
+                                        {role}
+                                    </option>
+                                ))}
+                            </Field>
+
+                            {errors.role && touched.role && (
                                 <div className={styles.formError}>
-                                    {errors.email}
+                                    {errors.role}
                                 </div>
                             )}
 

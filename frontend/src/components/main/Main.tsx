@@ -13,9 +13,10 @@ const Main = () => {
     const regHandler = (): void => {
         navigate('/reg');
     }
+
     return (
         <>
-            <Outlet />
+            <Outlet/>
             <div className={styles.wrapper}>
                 <div className={styles.header}>
                     <div className={styles.logo}

@@ -45,12 +45,13 @@
     margin-bottom: 10px;
 }
 
+
 .formError {
     font-size: 12px;
     font-weight: 700;
     color: red;
     margin-top: -7px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .btn {
@@ -76,11 +77,12 @@
 
 .bg {
     position: absolute;
-    width:100%;
-    background:#000;
-    opacity:0.5;
+    width: 100%;
+    background: #000;
+    opacity: 0.5;
     height: 100vh;
 }
+
 body {
     overflow: hidden;
 }
