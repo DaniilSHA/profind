@@ -8,8 +8,19 @@ import validation from "../../validation/validation";
 function Reg() {
     const navigate = useNavigate();
 
-    const roles = ['Выберите роль', 'Front-end', 'Java', 'Python'];
-    const data = ['', 'Front-end', 'Java', 'Python'];
+    const roles = [{
+        role: 'Выберите роль',
+        value: '',
+    }, {
+        role: 'Front-end',
+        value: 'Front-end',
+    }, {
+        role: 'Java',
+        value: 'Java',
+    }, {
+        role: 'Python',
+        value: 'Python',
+    }];
 
     const backHandler = () => {
         navigate('/');
@@ -67,8 +78,8 @@ function Reg() {
                             <label className={styles.formLabel}>Роль:</label>
                             <Field as="select" name="role" className={styles.formField}>
                                 {roles.map((role, index) => (
-                                    <option key={index} value={data[index]}>
-                                        {role}
+                                    <option key={index} value={role.value}>
+                                        {role.role}
                                     </option>
                                 ))}
                             </Field>
