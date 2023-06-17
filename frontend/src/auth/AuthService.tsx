@@ -13,7 +13,10 @@ export class AuthService {
     }
 
     public init(): void {
-        const base_token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1hcmF0aWswNyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjg3MDAzNTA4LCJleHAiOjE2ODcwMDQ0MDh9.-yHPbuE8c2G9oAAWmxnK5oTL6WNe0u9N8bxrjzqD7ek";
+        let base_token_item = window.localStorage.getItem(BASE_TOKEN_KEY);
+        let base_token: string;
+        base_token_item === null ? base_token = '' : base_token = base_token_item;
+
         serverAPI.tokenCheck(base_token).then((result) => {
             if (result) {
                 const tokenInfo: LoginSuccessData = jwt_decode(base_token);
@@ -23,6 +26,7 @@ export class AuthService {
                 }))
                 console.log(tokenInfo)
             }
+
         });
 
     }
