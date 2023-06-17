@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './Reg.module.css';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
 import validation from "../../validation/validation";
 
@@ -8,23 +8,10 @@ import validation from "../../validation/validation";
 function Reg() {
     const navigate = useNavigate();
 
-    const roles = [{
-        role: 'Выберите роль',
-        value: '',
-    }, {
-        role: 'Front-end',
-        value: 'Front-end',
-    }, {
-        role: 'Java',
-        value: 'Java',
-    }, {
-        role: 'Python',
-        value: 'Python',
-    }];
-
     const backHandler = () => {
         navigate('/');
     }
+
     return (
         <>
             <div className={styles.bg} onClick={backHandler}></div>
@@ -34,8 +21,8 @@ function Reg() {
                     initialValues={{
                         username: '',
                         password: '',
-                        role: '',
                     }}
+
                     onSubmit={values => {
                         console.log(values);
                     }}
@@ -72,21 +59,6 @@ function Reg() {
                             {errors.password && touched.password && (
                                 <div className={styles.formError}>
                                     {errors.password}
-                                </div>
-                            )}
-
-                            <label className={styles.formLabel}>Роль:</label>
-                            <Field as="select" name="role" className={styles.formField}>
-                                {roles.map((role, index) => (
-                                    <option key={index} value={role.value}>
-                                        {role.role}
-                                    </option>
-                                ))}
-                            </Field>
-
-                            {errors.role && touched.role && (
-                                <div className={styles.formError}>
-                                    {errors.role}
                                 </div>
                             )}
 
