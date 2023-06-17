@@ -1,8 +1,16 @@
-export const loginSuccess = (user: any) => {
+type Role = {
+    role: "USER"|"ADMIN"|"MODER",
+}
+export type LoginSuccessData = {
+    username: string,
+    role: Role,
+}
+
+export const loginSuccess = (user: LoginSuccessData) => {
     return {
         type: 'LOGIN_SUCCESS',
         username: user.username,
-        role: user.role,
+        role: user.role.role,
     };
 };
 
