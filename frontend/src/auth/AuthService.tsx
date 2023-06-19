@@ -1,7 +1,7 @@
 import {serverAPI} from "./ServerAPI";
 import jwt_decode from 'jwt-decode';
 import {store} from "../redux/store";
-import {loginSuccess} from "../redux/authActions";
+import * as auth from "../redux/authActions";
 import {LoginSuccessData} from "../redux/authActions";
 
 const BASE_TOKEN_KEY: string = 'base_token';
@@ -20,20 +20,28 @@ export class AuthService {
         serverAPI.tokenCheck(base_token).then((result) => {
             if (result) {
                 const tokenInfo: LoginSuccessData = jwt_decode(base_token);
-                store.dispatch(loginSuccess({
+                store.dispatch(auth.loginSuccess({
                     username: tokenInfo.username,
                     role: tokenInfo.role,
                 }))
                 console.log(tokenInfo)
             }
-
         });
-
     }
 
-    public start() {
-        this.init();
+    public register(): void {
+        const state: any = store.getState();
+        const username: string = state.authReg.username;
+        const password: string = state.authReg.password;
+        serverAPI.regUser(username, password).then((result) => {
+            if (result) {
+                store.dispatch(auth.changeRegMessage('Регистрация прошла успешно.'))
+            } else {
+                store.dispatch(auth.changeRegMessage('Данный логин уже используется.'))
+            }
+        })
     }
+
 }
 
 export const authService: AuthService = new AuthService();

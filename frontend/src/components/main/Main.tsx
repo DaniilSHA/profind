@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './Main.module.css';
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import Login from "../login/Login";
-import Reg from "../registration/Reg";
+import {Outlet, useNavigate} from "react-router-dom";
+
 
 const Main = () => {
     const navigate = useNavigate();
@@ -77,5 +76,4 @@ const Main = () => {
         </>
     );
 }
-
 export default Main;

@@ -10,7 +10,7 @@ const LOGIN_FAILURE: string = "LOGIN_FAILURE";
 const LOGOUT: string = "LOGOUT";
 
 
-export const authReducer = (state: object = defaultState, action: any) => {
+export const loginReducer = (state: object = defaultState, action: any) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
             return {

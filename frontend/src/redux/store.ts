@@ -1,8 +1,10 @@
 import {createStore, combineReducers} from "redux";
-import {authReducer} from "./authReducer";
+import {loginReducer} from "./loginReducer";
+import {registerReducer} from "./registerReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 
 const rootReducer = combineReducers({
-    auth: authReducer,
+    authLog: loginReducer,
+    authReg: registerReducer,
 })
 export const store = createStore(rootReducer, composeWithDevTools());

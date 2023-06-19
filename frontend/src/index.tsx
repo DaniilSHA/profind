@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-authService.start();
+authService.init();
 serverAPI.start();
 
 root.render(

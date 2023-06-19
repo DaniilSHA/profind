@@ -3,6 +3,9 @@ import styles from './Reg.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
 import validation from "../../validation/validation";
+import {useDispatch, useSelector} from "react-redux";
+import * as auth from '../../redux/authActions';
+import {authService} from "../../auth/AuthService";
 
 
 function Reg() {
@@ -10,6 +13,20 @@ function Reg() {
 
     const backHandler = () => {
         navigate('/');
+        dispatch(auth.changeRegMessage(''));
+    }
+
+    const gotoLogin = () => {
+        navigate('/login');
+        dispatch(auth.changeRegMessage(''));
+    }
+
+    const dispatch = useDispatch();
+
+    const message = useSelector((state: any) => state.authReg.message);
+
+    if (message === 'Регистрация прошла успешно.') {
+        setTimeout(gotoLogin, 1500);
     }
 
     return (
@@ -25,6 +42,14 @@ function Reg() {
 
                     onSubmit={values => {
                         console.log(values);
+
+                        dispatch(auth.registration({
+                            username: values.username,
+                            password: values.password,
+                        }))
+
+                        authService.register();
+
                     }}
                 >
                     {({errors, touched}) => (
@@ -32,7 +57,6 @@ function Reg() {
                             <label className={styles.title}>
                                 Регистрация
                             </label>
-
                             <label className={styles.formLabel}>
                                 Логин:
                             </label>
@@ -61,6 +85,10 @@ function Reg() {
                                     {errors.password}
                                 </div>
                             )}
+
+                            <div className={styles.regError}>
+                                {message}
+                            </div>
 
                             <button
                                 className={styles.btn}
