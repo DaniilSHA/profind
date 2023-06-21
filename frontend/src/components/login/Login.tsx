@@ -1,15 +1,24 @@
 import React from 'react';
 import styles from './Login.module.css';
 import {Formik, Form, Field} from 'formik';
-import * as yup from 'yup';
-import {findAllByDisplayValue} from "@testing-library/react";
 import {useNavigate} from "react-router-dom";
 import validation from "../../validation/validation";
+import {authService} from "../../api/auth/AuthService";
+import {useDispatch, useSelector} from "react-redux";
+import * as auth from "../../redux/authActions";
 
 function Login() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const error = useSelector((state: any) => state.authLog.authData.error);
     const backHandler = () => {
         navigate('/');
+        dispatch(auth.loginFailure(''));
+    }
+
+    const gotoHome = () => {
+        navigate('/home');
+        dispatch(auth.changeRegMessage(''));
     }
 
     return (
@@ -24,7 +33,11 @@ function Login() {
                     }}
                     onSubmit={values => {
                         console.log('submit', values);
+                        authService.login(values.username, values.password);
 
+                        if (error === '') {
+                            gotoHome();
+                        }
                     }}
                 >
                     {({errors, touched}) => (
@@ -59,7 +72,9 @@ function Login() {
                                     {errors.password}
                                 </div>
                             )}
-
+                            <div className={styles.logError}>
+                                {error}
+                            </div>
                             <button
                                 className={styles.btn}
                                 type="submit"

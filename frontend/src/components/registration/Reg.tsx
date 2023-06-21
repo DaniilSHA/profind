@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import validation from "../../validation/validation";
 import {useDispatch, useSelector} from "react-redux";
 import * as auth from '../../redux/authActions';
-import {authService} from "../../auth/AuthService";
+import {authService} from "../../api/auth/AuthService";
 
 
 function Reg() {
@@ -41,7 +41,6 @@ function Reg() {
                     }}
 
                     onSubmit={values => {
-                        console.log(values);
 
                         dispatch(auth.registration({
                             username: values.username,

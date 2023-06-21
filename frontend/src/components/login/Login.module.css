@@ -54,7 +54,6 @@
 }
 
 .btn {
-    width: 100px;
     background: #27AE60;
     font-weight: bold;
     color: white;
@@ -62,7 +61,8 @@
     border-radius: 1px;
     cursor: pointer;
     padding: 10px;
-    margin: 10px 27%;
+    margin: 10px auto;
+    width: 100%;
     text-decoration: none;
     font-size: 14px;
     transition: 0.3s all;
@@ -83,4 +83,13 @@
 }
 body {
     overflow: hidden;
+}
+
+.logError {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 0px;
 }

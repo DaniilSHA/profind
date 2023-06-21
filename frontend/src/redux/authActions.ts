@@ -1,23 +1,37 @@
-import Reg from "../components/registration/Reg";
-
-type Role = {
-    role: "USER"|"ADMIN"|"MODER",
+export type Profile = {
+    username: string,
+    role: "USER" | "ADMIN" | "MODER" | null,
 }
 export type LoginSuccessData = {
-    username: string,
-    role: Role,
+    authData: {
+        base_token: string | null,
+    }
+    profileData: Profile,
 }
 
-export type RegData = {
+export type LogRegData = {
     username: string,
     password: string,
 }
 
-export const loginSuccess = (user: LoginSuccessData) => {
+//Login
+export const loginStart = () => {
+    return {
+        type: 'LOGIN_START',
+    }
+}
+
+export const loginSuccess = (actionData: LoginSuccessData) => {
+
     return {
         type: 'LOGIN_SUCCESS',
-        username: user.username,
-        role: user.role.role,
+        profileData: {
+            username: actionData.profileData.username,
+            role: actionData.profileData.role,
+        },
+        authData: {
+            base_token: actionData.authData.base_token,
+        }
     };
 };
 
@@ -34,15 +48,16 @@ export const logout = () => {
     };
 };
 
-export const registration = (regData:RegData) => {
+//Registration
+export const registration = (regData: LogRegData) => {
     return {
         type: 'REG_TRY',
-        username:regData.username,
-        password:regData.password,
+        username: regData.username,
+        password: regData.password,
     };
 };
 
-export const changeRegMessage = (message:string) => {
+export const changeRegMessage = (message: string) => {
     return {
         type: 'CHANGE_MESSAGE',
         message: message,
