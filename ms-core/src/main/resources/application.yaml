@@ -13,3 +13,5 @@ spring:
     hibernate:
       ddl-auto: create
 key: javadocsdsadsafgsdag4aergdfsagdfgfdgrgredasdasdsadsa
+server:
+  port: 8081
