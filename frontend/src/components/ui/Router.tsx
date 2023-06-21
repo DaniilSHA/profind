@@ -11,12 +11,10 @@ const Router = () => {
     const isAuth: boolean = useSelector((state: any) => state.authLog.authData.isAuth);
     return <BrowserRouter>
         <Routes>
-            {!isAuth &&
             <Route path='/' element={<Main/>}>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/reg' element={<Reg/>}/>
             </Route>
-            }
             <Route path='*' element={<div> Not found </div>}/>
             {isAuth &&
                 <Route path='/home' element={<Home/>}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Login.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
@@ -11,14 +11,15 @@ function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const error = useSelector((state: any) => state.authLog.authData.error);
+    const isAuth = useSelector((state: any) => state.authLog.authData.isAuth);
+
     const backHandler = () => {
         navigate('/');
         dispatch(auth.loginFailure(''));
     }
-
-    const gotoHome = () => {
+    debugger;
+    if (isAuth) {
         navigate('/home');
-        dispatch(auth.changeRegMessage(''));
     }
 
     return (
@@ -34,10 +35,6 @@ function Login() {
                     onSubmit={values => {
                         console.log('submit', values);
                         authService.login(values.username, values.password);
-
-                        if (error === '') {
-                            gotoHome();
-                        }
                     }}
                 >
                     {({errors, touched}) => (

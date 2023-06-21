@@ -11,6 +11,8 @@ import {authService} from "../../api/auth/AuthService";
 function Reg() {
     const navigate = useNavigate();
 
+    const isAuth = useSelector((state: any) => state.authLog.authData.isAuth);
+
     const backHandler = () => {
         navigate('/');
         dispatch(auth.changeRegMessage(''));
@@ -27,6 +29,10 @@ function Reg() {
 
     if (message === 'Регистрация прошла успешно.') {
         setTimeout(gotoLogin, 1500);
+    }
+
+    if (isAuth) {
+        navigate('/home');
     }
 
     return (
