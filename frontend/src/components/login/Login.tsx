@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {validation_log} from "../../validation/validation";
 import {authService} from "../../api/auth/AuthService";
 import {useDispatch, useSelector} from "react-redux";
-import * as auth from "../../redux/authActions";
+import * as auth from "../../redux/auth/authActions";
 
 function Login() {
     const navigate = useNavigate();

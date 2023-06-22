@@ -1,18 +1,18 @@
 import React from 'react';
 import styles from './Home.module.css';
-import {NavLink, Outlet, useMatch, useNavigate} from "react-router-dom";
+import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {authService} from "../../api/auth/AuthService";
 
 
 function Home() {
-    const navgate = useNavigate();
+    const navigate = useNavigate();
     const username = useSelector((state: any) => state.authLog.profileData.profile.username);
     const role = useSelector((state: any) => state.authLog.profileData.profile.role);
 
     const handleLogout = () => {
         authService.logout();
-        navgate('/');
+        navigate('/');
     }
     return (
         <>

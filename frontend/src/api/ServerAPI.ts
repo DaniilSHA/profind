@@ -1,4 +1,5 @@
 import axios from "axios";
+import {Form} from "../redux/form/formReducer";
 
 
 const URL_AUTH_HOST = `http://localhost:8080`
@@ -6,12 +7,7 @@ const URL_TOKEN_CHECK = `${URL_AUTH_HOST}/check`;
 const URL_TOKEN_REG = `${URL_AUTH_HOST}/register`;
 const URL_TOKEN_LOG = `${URL_AUTH_HOST}/login`;
 const URL_TOKEN_REFRESH = `${URL_AUTH_HOST}/refresh`;
-
-/*type ResponseTokenCheck = {
-    isAuth: false,
-    username: null,
-    role: null,
-} */
+const URL_TOKEN_PROFILE = `${URL_AUTH_HOST}/profile`;
 
 type Tokens = {
     base_token: string,
@@ -64,20 +60,25 @@ class ServerAPI {
         });
     }
 
-    public refresh(refresh_token: string): Promise<Tokens> {
-        return new Promise((resolve, reject) => {
-            axios.post(URL_TOKEN_REFRESH, {
-                refresh_token: refresh_token,
-            }).then((data) => {
-                resolve({
-                    base_token: data.data.base_token,
-                    refresh_token: data.data.refresh_token,
-                });
-            }).catch((data)=>{
-                console.log('error: ', data);
-            })
-        })
+    public baseTokenWrapper (base_token:string):string {
+        return `bearer_${base_token}`;
     }
+
+    public profile (base_token:string):Promise<Form | boolean> {
+        const currentToken = this.baseTokenWrapper(base_token);
+        return new Promise((resolve, reject) => {
+            axios.post(URL_TOKEN_PROFILE, {
+                auth_token: currentToken,
+            }).then((data) => {
+                console.log(data);
+                resolve(true);
+            }).catch((data) => {
+                console.log(data);
+                resolve(false);
+            });
+        });
+    }
+
 
     public start() {
     }
