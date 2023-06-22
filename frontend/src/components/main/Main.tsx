@@ -78,7 +78,10 @@ const Main = () => {
                 }
                 {isAuth &&
                     <div className={styles.footer}>
-                        <button className={styles.btn} onClick={()=>{navigate('/home')}}>Перейти на главную</button>
+                        <button className={styles.btn} onClick={() => {
+                            navigate('/home')
+                        }}>Перейти на главную
+                        </button>
                     </div>
                 }
             </div>

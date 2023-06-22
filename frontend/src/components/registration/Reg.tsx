@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Reg.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
-import validation from "../../validation/validation";
+import {validation_reg} from "../../validation/validation";
 import {useDispatch, useSelector} from "react-redux";
 import * as auth from '../../redux/authActions';
 import {authService} from "../../api/auth/AuthService";
@@ -40,7 +40,7 @@ function Reg() {
             <div className={styles.bg} onClick={backHandler}></div>
             <div className={styles.login}>
                 <Formik
-                    validationSchema={validation}
+                    validationSchema={validation_reg}
                     initialValues={{
                         username: '',
                         password: '',

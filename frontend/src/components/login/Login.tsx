@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from './Login.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
-import validation from "../../validation/validation";
+import {validation_log} from "../../validation/validation";
 import {authService} from "../../api/auth/AuthService";
 import {useDispatch, useSelector} from "react-redux";
 import * as auth from "../../redux/authActions";
@@ -11,13 +11,15 @@ function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const error = useSelector((state: any) => state.authLog.authData.error);
+    console.log(error);
     const isAuth = useSelector((state: any) => state.authLog.authData.isAuth);
 
     const backHandler = () => {
         navigate('/');
         dispatch(auth.loginFailure(''));
     }
-    debugger;
+
+
     if (isAuth) {
         navigate('/home');
     }
@@ -27,7 +29,7 @@ function Login() {
             <div className={styles.bg} onClick={backHandler}></div>
             <div className={styles.login}>
                 <Formik
-                    validationSchema={validation}
+                    validationSchema={validation_log}
                     initialValues={{
                         username: '',
                         password: '',

@@ -3,9 +3,6 @@ export type Profile = {
     role: "USER" | "ADMIN" | "MODER" | null,
 }
 export type LoginSuccessData = {
-    authData: {
-        base_token: string | null,
-    }
     profileData: Profile,
 }
 
@@ -29,9 +26,6 @@ export const loginSuccess = (actionData: LoginSuccessData) => {
             username: actionData.profileData.username,
             role: actionData.profileData.role,
         },
-        authData: {
-            base_token: actionData.authData.base_token,
-        }
     };
 };
 

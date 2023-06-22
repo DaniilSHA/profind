@@ -7,7 +7,6 @@ export type AuthState = {
     authData: {
         isAuth: boolean,
         isLoading: boolean,
-        base_token: string | null,
         error: string | null,
     }
     profileData: {
@@ -19,7 +18,6 @@ const initialState: AuthState = {
     authData: {
         isLoading: false,
         isAuth: false,
-        base_token: null,
         error: null,
     },
     profileData: {
@@ -53,7 +51,6 @@ export const loginReducer = (state: AuthState = initialState, action: any) => {
                 authData: {
                     isLoading: false,
                     isAuth: true,
-                    base_token: action.authData.base_token,
                     error: null,
                 },
                 profileData: {

@@ -16,9 +16,8 @@ authService.init();
 serverAPI.start();
 
 root.render(
-
     <Provider store={store}>
-            <App/>
+        <App/>
     </Provider>
 );
 

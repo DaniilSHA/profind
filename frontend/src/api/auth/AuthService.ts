@@ -4,14 +4,13 @@ import {store} from "../../redux/store";
 import * as auth from "../../redux/authActions";
 import {Profile} from "../../redux/authActions";
 
-const BASE_TOKEN_KEY: string = 'base_token';
-const REFRESH_TOKEN_KEY: string = 'refresh_token';
+const BASE_TOKEN_KEY = 'base_token';
+const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export class AuthService {
     constructor() {
         console.log('authService constructor');
     }
-
 
     public init(): void {
         let base_token_item = window.localStorage.getItem(BASE_TOKEN_KEY);
@@ -22,9 +21,6 @@ export class AuthService {
             if (result) {
                 const tokenInfo: Profile = jwt_decode(base_token);
                 store.dispatch(auth.loginSuccess({
-                    authData: {
-                        base_token: base_token,
-                    },
                     profileData: {
                         username: tokenInfo.username,
                         role: tokenInfo.role,
@@ -57,9 +53,6 @@ export class AuthService {
                 localStorage.setItem(REFRESH_TOKEN_KEY, result.refresh_token);
                 const tokenInfo: Profile = jwt_decode(result.base_token);
                 store.dispatch(auth.loginSuccess({
-                    authData: {
-                        base_token: result.base_token,
-                    },
                     profileData: {
                         username: tokenInfo.username,
                         role: tokenInfo.role,
