@@ -61,6 +61,12 @@ export class AuthService {
             }
         })
     }
+
+    public logout(): void {
+        localStorage.setItem(BASE_TOKEN_KEY, '');
+        localStorage.setItem(REFRESH_TOKEN_KEY, '');
+        store.dispatch(auth.logout());
+    }
 }
 
 export const authService: AuthService = new AuthService();

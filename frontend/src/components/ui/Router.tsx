@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 
 const Router = () => {
     const isAuth: boolean = useSelector((state: any) => state.authLog.authData.isAuth);
+    const currentRole = useSelector((state: any) => state.authLog.profileData.profile.role);
     return <BrowserRouter>
         <Routes>
             <Route path='/' element={<Main/>}>
@@ -18,6 +19,12 @@ const Router = () => {
             <Route path='*' element={<div> Not found </div>}/>
             {isAuth &&
                 <Route path='/home' element={<Home/>}>
+                    <Route path='find' element={<div>FIND</div>}/>
+                    <Route path='matches' element={<div>MATCHES</div>}/>
+                    <Route path='form' element={<div>FORM</div>}/>
+                    {(currentRole !== 'USER') &&
+                        <Route path='moderation' element={<div>MODERATION</div>}/>
+                    }
                 </Route>
             }
         </Routes>
