@@ -20,6 +20,12 @@ public class AuthFilter implements Filter
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        if (request.getMethod().equals("OPTIONS"))
+        {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         String authToken = request.getHeader("auth_token");
 
         if (authToken == null)
@@ -28,13 +34,15 @@ public class AuthFilter implements Filter
             return;
         }
 
-        if (!authToken.contains("bearer_") && authToken.split("_").length != 2) {
+        if (!authToken.contains("bearer_") && authToken.split("_").length != 2)
+        {
             response.setStatus(403);
             return;
         }
 
         String username = jwtService.validate(authToken.split("_")[1]);
-        if (username == null) {
+        if (username == null)
+        {
             response.setStatus(403);
             return;
         }
