@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-function Form() {
+function Profile() {
     return (
         <>
 
@@ -10,4 +10,4 @@ function Form() {
     );
 }
 
-export default Form;
+export default Profile;

@@ -3,6 +3,7 @@ import styles from './Home.module.css';
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {authService} from "../../api/auth/AuthService";
+import {serverAPI, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
 
 
 function Home() {
@@ -14,6 +15,20 @@ function Home() {
         authService.logout();
         navigate('/');
     }
+
+    const handleTest = () => {
+        serverAPI.requestWrapper({
+            requestType: {
+                type: 'POST',
+            },
+            url: URL_TOKEN_PROFILE,
+            body: null,
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+            console.log(error);
+        })
+    }
     return (
         <>
             <div className={styles.container}>
@@ -22,7 +37,7 @@ function Home() {
                         <ul className={styles.nav__list}>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='find'
-                                         className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
+                                         onClick={handleTest} className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
                             </li>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='matches'

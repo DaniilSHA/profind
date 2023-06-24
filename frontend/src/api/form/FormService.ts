@@ -9,7 +9,7 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export class FormService {
     constructor() {
-        console.log('authService constructor');
+        console.log('formService constructor');
     }
 
 }

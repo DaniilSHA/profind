@@ -4,8 +4,8 @@ import {store} from "../../redux/store";
 import * as auth from "../../redux/auth/authActions";
 import {Profile} from "../../redux/auth/authActions";
 
-const BASE_TOKEN_KEY = 'base_token';
-const REFRESH_TOKEN_KEY = 'refresh_token';
+export const BASE_TOKEN_KEY = 'base_token';
+export const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export class AuthService {
     constructor() {
@@ -49,8 +49,7 @@ export class AuthService {
                 store.dispatch(auth.loginFailure('Логин/пароль введены неправильно.'))
             }
             if (typeof result !== "string") {
-                localStorage.setItem(BASE_TOKEN_KEY, result.base_token);
-                localStorage.setItem(REFRESH_TOKEN_KEY, result.refresh_token);
+                this.saveTokens(result.base_token,result.refresh_token);
                 const tokenInfo: Profile = jwt_decode(result.base_token);
                 store.dispatch(auth.loginSuccess({
                     profileData: {
@@ -63,9 +62,13 @@ export class AuthService {
     }
 
     public logout(): void {
-        localStorage.setItem(BASE_TOKEN_KEY, '');
-        localStorage.setItem(REFRESH_TOKEN_KEY, '');
+        this.saveTokens('','');
         store.dispatch(auth.logout());
+    }
+
+    public saveTokens(base_token:string, refresh_token:string): void {
+        localStorage.setItem(BASE_TOKEN_KEY, base_token);
+        localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
     }
 }
 

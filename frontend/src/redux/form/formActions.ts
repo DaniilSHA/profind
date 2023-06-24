@@ -1,8 +1,8 @@
-import {Form} from "./formReducer";
+import {Profile} from "./formReducer";
 
-export const formUpdate = (profile: Form) => {
+export const formUpdate = (profile: Profile) => {
     return {
-        type: 'FORM_UPDATE',
+        type: 'PROFILE_UPDATE',
         status: profile.status,
         name: profile.name,
         about: profile.about,

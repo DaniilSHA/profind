@@ -5,7 +5,7 @@ import Reg from "../registration/Reg";
 import Login from "../login/Login";
 import Home from "../home/Home";
 import {useSelector} from "react-redux";
-import Form from "../form/Form";
+import Profile from "../form/Profile";
 
 
 const Router = () => {
@@ -22,7 +22,7 @@ const Router = () => {
                 <Route path='/home' element={<Home/>}>
                     <Route path='find' element={<div>FIND</div>}/>
                     <Route path='matches' element={<div>MATCHES</div>}/>
-                    <Route path='form' element={<Form />}/>
+                    <Route path='form' element={<Profile />}/>
                     {(currentRole !== 'USER') &&
                         <Route path='moderation' element={<div>MODERATION</div>}/>
                     }

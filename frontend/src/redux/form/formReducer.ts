@@ -1,4 +1,4 @@
-export type Form = {
+export type Profile = {
     status: 'NEW'|'VALID'|'NO_VALID',
     name: string,
     about: string,
@@ -7,7 +7,7 @@ export type Form = {
     no_valid: string,
 }
 
-const initialState: Form  = {
+const initialState: Profile  = {
     status: 'NEW',
     name: '',
     about: '',
@@ -16,12 +16,12 @@ const initialState: Form  = {
     no_valid: '',
 }
 
-const FORM_UPDATE: string = "FORM_UPDATE";
+const PROFILE_UPDATE: string = "PROFILE_UPDATE";
 
-export const formReducer = (state: Form = initialState, action: any) => {
+export const formReducer = (state: Profile = initialState, action: any) => {
     switch (action.type) {
 
-        case FORM_UPDATE:
+        case PROFILE_UPDATE:
             return {
                 ...state,
                 status: action.status,
