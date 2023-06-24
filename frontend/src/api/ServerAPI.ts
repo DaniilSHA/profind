@@ -94,19 +94,22 @@ class ServerAPI {
         });
     }
 
-    public requestErrorHandler(error: number, request: RequestWrapper): Promise<any> | string {
+    public requestErrorHandler(error: number, request: RequestWrapper, resolve:any,reject:any): void {
         if (error === 403) {
             let refresh_token_item = window.localStorage.getItem(REFRESH_TOKEN_KEY);
             let refresh_token: string;
             refresh_token_item === null ? refresh_token = '' : refresh_token = refresh_token_item;
             this.refresh(refresh_token).then(data => {
                 authService.saveTokens(data.base_token, data.refresh_token);
-                return this.requestWrapper(request);
+                this.requestWrapper(request).then((data)=>{
+                    resolve(data);
+                }).catch((error)=>{
+                    reject(error.response.status);
+                });
             }).catch(() => {
                 authService.logout();
             });
         }
-        return `${error}`;
     }
 
     public requestWrapper(request: RequestWrapper): Promise<any> {
@@ -120,16 +123,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status, request);
-                        if (typeof (requestError) == "string") {
-                            reject(requestError);
-                        } else {
-                            requestError.then(data => {
-                                resolve(data);
-                            }).catch(error => {
-                                reject(error.response.status);
-                            })
-                        }
+                        this.requestErrorHandler(error.response.status, request,resolve,reject);
                     })
                 })
             case 'GET':
@@ -141,17 +135,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        debugger;
-                        const requestError = this.requestErrorHandler(error.response.status, request);
-                        if (typeof (requestError) == "string") {
-                            reject(requestError);
-                        } else {
-                            requestError.then(data => {
-                                resolve(data);
-                            }).catch(error => {
-                                reject(error.response.status);
-                            })
-                        }
+                        this.requestErrorHandler(error.response.status, request,resolve,reject);
                     })
                 })
             case 'PUT':
@@ -163,16 +147,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status, request);
-                        if (typeof (requestError) == "string") {
-                            reject(requestError);
-                        } else {
-                            requestError.then(data => {
-                                resolve(data);
-                            }).catch(error => {
-                                reject(error.response.status);
-                            })
-                        }
+                        this.requestErrorHandler(error.response.status, request,resolve,reject);
                     })
                 })
             case 'DELETE':
@@ -184,16 +159,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status, request);
-                        if (typeof (requestError) == "string") {
-                            reject(requestError);
-                        } else {
-                            requestError.then(data => {
-                                resolve(data);
-                            }).catch(error => {
-                                reject(error.response.status);
-                            })
-                        }
+                        this.requestErrorHandler(error.response.status, request,resolve,reject);
                     })
                 })
         }

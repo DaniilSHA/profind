@@ -28,6 +28,25 @@ function Home() {
         }).catch(error => {
             console.log(error);
         })
+
+        serverAPI.requestWrapper({
+            requestType: {
+                type: 'POST',
+            },
+            url: URL_TOKEN_PROFILE,
+            body: {
+                status: 'NEW',
+                name: '',
+                about: '',
+                goal: 'STUDENT',
+                program_language: 'JAVA',
+                no_valid: '',
+            },
+        }).then(data => {
+            console.log(data);
+        }).catch(error => {
+            console.log(error);
+        })
     }
     return (
         <>
