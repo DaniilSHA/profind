@@ -19,7 +19,7 @@ function Home() {
     const handleTest = () => {
         serverAPI.requestWrapper({
             requestType: {
-                type: 'POST',
+                type: 'GET',
             },
             url: URL_TOKEN_PROFILE,
             body: null,

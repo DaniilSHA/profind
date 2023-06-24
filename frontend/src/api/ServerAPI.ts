@@ -16,11 +16,7 @@ const URL_TOKEN_REFRESH = `${URL_AUTH_HOST}/refresh`;
 
 export const URL_TOKEN_PROFILE = `${URL_CORE_HOST}/profile`;
 
-const reqToCoreInstance = axios.create({
-    headers: {
-        auth_token: `bearer_${localStorage.getItem("base_token")}`
-    }
-})
+const reqToCoreInstance = axios.create();
 
 type Tokens = {
     base_token: string,
@@ -98,26 +94,7 @@ class ServerAPI {
         });
     }
 
-    public baseTokenWrapper(base_token: string): string {
-        return `bearer_${base_token}`;
-    }
-
-    public profile(base_token: string): Promise<Profile | boolean> {
-        const currentToken = this.baseTokenWrapper(base_token);
-        return new Promise((resolve, reject) => {
-            axios.post(URL_TOKEN_PROFILE, {
-                auth_token: currentToken,
-            }).then((data) => {
-                console.log(data);
-                resolve(true);
-            }).catch((data) => {
-                console.log(data);
-                resolve(false);
-            });
-        });
-    }
-
-    public requestErrorHandler(error: number, request:RequestWrapper): Promise<any>|string {
+    public requestErrorHandler(error: number, request: RequestWrapper): Promise<any> | string {
         if (error === 403) {
             let refresh_token_item = window.localStorage.getItem(REFRESH_TOKEN_KEY);
             let refresh_token: string;
@@ -136,10 +113,14 @@ class ServerAPI {
         switch (request.requestType.type) {
             case 'POST':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.post(request.url, request.body).then((data) => {
+                    reqToCoreInstance.post(request.url, request.body,{
+                        headers: {
+                            auth_token: `bearer_${localStorage.getItem("base_token")}`,
+                        }
+                    }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status,request);
+                        const requestError = this.requestErrorHandler(error.response.status, request);
                         if (typeof (requestError) == "string") {
                             reject(requestError);
                         } else {
@@ -153,11 +134,15 @@ class ServerAPI {
                 })
             case 'GET':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.get(request.url).then((data) => {
+                    reqToCoreInstance.get(request.url,{
+                        headers: {
+                            auth_token: `bearer_${localStorage.getItem("base_token")}`,
+                        }
+                    }).then((data) => {
                         resolve(data);
                     }).catch(error => {
                         debugger;
-                        const requestError = this.requestErrorHandler(error.response.status,request);
+                        const requestError = this.requestErrorHandler(error.response.status, request);
                         if (typeof (requestError) == "string") {
                             reject(requestError);
                         } else {
@@ -171,10 +156,14 @@ class ServerAPI {
                 })
             case 'PUT':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.put(request.url, request.body).then((data) => {
+                    reqToCoreInstance.put(request.url, request.body,{
+                        headers: {
+                            auth_token: `bearer_${localStorage.getItem("base_token")}`,
+                        }
+                    }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status,request);
+                        const requestError = this.requestErrorHandler(error.response.status, request);
                         if (typeof (requestError) == "string") {
                             reject(requestError);
                         } else {
@@ -188,10 +177,14 @@ class ServerAPI {
                 })
             case 'DELETE':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.delete(request.url, request.body).then((data) => {
+                    reqToCoreInstance.delete(request.url, {
+                        headers: {
+                            auth_token: `bearer_${localStorage.getItem("base_token")}`,
+                        }
+                    }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        const requestError = this.requestErrorHandler(error.response.status,request);
+                        const requestError = this.requestErrorHandler(error.response.status, request);
                         if (typeof (requestError) == "string") {
                             reject(requestError);
                         } else {
