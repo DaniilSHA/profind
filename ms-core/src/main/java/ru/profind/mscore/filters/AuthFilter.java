@@ -30,24 +30,31 @@ public class AuthFilter implements Filter
 
         if (authToken == null)
         {
-            response.setStatus(403);
+            invalidateResponse(response);
             return;
         }
 
         if (!authToken.contains("bearer_") && authToken.split("_").length != 2)
         {
-            response.setStatus(403);
+            invalidateResponse(response);
             return;
         }
 
         String username = jwtService.validate(authToken.split("_")[1]);
         if (username == null)
         {
-            response.setStatus(403);
+            invalidateResponse(response);
             return;
         }
 
         request.setAttribute("username", username);
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public void invalidateResponse(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "x-access-token, Origin, X-Requested-With, Content-Type, Accept");
+        response.setStatus(403);
     }
 }
