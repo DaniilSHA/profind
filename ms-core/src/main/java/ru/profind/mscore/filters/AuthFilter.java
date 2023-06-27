@@ -35,13 +35,13 @@ public class AuthFilter implements Filter
             return;
         }
 
-        if (!authToken.contains("bearer_") || authToken.split("_").length != 2)
+        if (!authToken.contains("bearer_"))
         {
             invalidateResponse(response);
             return;
         }
 
-        JwtPrincipal jwtPrincipal = jwtService.validate(authToken.split("_")[1]);
+        JwtPrincipal jwtPrincipal = jwtService.validate(authToken.substring(authToken.indexOf("bearer_") + "bearer_".length()));
         if (jwtPrincipal == null)
         {
             invalidateResponse(response);

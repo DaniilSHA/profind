@@ -10,11 +10,28 @@ import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.exception.*;
 import ru.profind.mscore.servise.ProfileService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/")
 public class ProfileController
 {
     @Autowired private ProfileService profileService;
+
+    @GetMapping("/profiles")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProfileResponse> getProfiles(@RequestParam(required = false) String filterStatus)
+    {
+        try
+        {
+            if (filterStatus == null) return profileService.getProfiles();
+            ProfileStatus profileStatus = ProfileStatus.valueOf(filterStatus);
+            return profileService.getProfilesByStatus(profileStatus);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 
     @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
