@@ -34,7 +34,7 @@ public class AuthFilter implements Filter
             return;
         }
 
-        if (!authToken.contains("bearer_") && authToken.split("_").length != 2)
+        if (!authToken.contains("bearer_") || authToken.split("_").length != 2)
         {
             invalidateResponse(response);
             return;
