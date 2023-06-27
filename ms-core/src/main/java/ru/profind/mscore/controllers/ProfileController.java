@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.profind.mscore.domain.Profile;
-import ru.profind.mscore.domain.ProfileGoal;
-import ru.profind.mscore.domain.ProfileProgramLang;
-import ru.profind.mscore.domain.ProfileStatus;
+import ru.profind.mscore.domain.*;
 import ru.profind.mscore.dto.requset.ProfileRequest;
 import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.exception.ConflictException;
@@ -83,10 +80,12 @@ public class ProfileController
     public void editProfile(HttpServletRequest request, @RequestBody ProfileRequest profileRequestDto)
     {
         Object usernameObj = request.getAttribute("username");
-        if (usernameObj == null)
+        Object roleObj = request.getAttribute("role");
+        if (usernameObj == null || roleObj == null)
             throw new ServerException();
 
         String username = (String) usernameObj;
+        UserRole userRole = UserRole.valueOf((String) roleObj);
 
         Profile profile = profileService.getProfile(username);
         if (profile == null)
