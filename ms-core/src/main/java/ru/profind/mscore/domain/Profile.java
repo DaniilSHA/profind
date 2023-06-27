@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Data
-public class Profile implements Serializable
+public class ProfileOK implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

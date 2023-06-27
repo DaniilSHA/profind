@@ -11,7 +11,6 @@ function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const error = useSelector((state: any) => state.authLog.authData.error);
-    console.log(error);
     const isAuth = useSelector((state: any) => state.authLog.authData.isAuth);
 
     const backHandler = () => {
@@ -20,9 +19,11 @@ function Login() {
     }
 
 
-    if (isAuth) {
-        navigate('/home');
-    }
+    useEffect(() => {
+        if (isAuth) {
+            navigate('/home');
+        }
+    }, [isAuth, navigate]);
 
     return (
         <>
@@ -35,7 +36,6 @@ function Login() {
                         password: '',
                     }}
                     onSubmit={values => {
-                        console.log('submit', values);
                         authService.login(values.username, values.password);
                     }}
                 >

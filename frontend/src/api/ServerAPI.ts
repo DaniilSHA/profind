@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Profile} from "../redux/form/formReducer";
+import {Profile} from "../redux/profile/profileReducer";
 import {bool} from "yup";
 import {loginSuccess} from "../redux/auth/authActions";
 import {authService, REFRESH_TOKEN_KEY} from "./auth/AuthService";
@@ -94,16 +94,16 @@ class ServerAPI {
         });
     }
 
-    public requestErrorHandler(error: number, request: RequestWrapper, resolve:any,reject:any): void {
+    public requestErrorHandler(error: number, request: RequestWrapper, resolve: any, reject: any): void {
         if (error === 403) {
             let refresh_token_item = window.localStorage.getItem(REFRESH_TOKEN_KEY);
             let refresh_token: string;
             refresh_token_item === null ? refresh_token = '' : refresh_token = refresh_token_item;
             this.refresh(refresh_token).then(data => {
                 authService.saveTokens(data.base_token, data.refresh_token);
-                this.requestWrapper(request).then((data)=>{
+                this.requestWrapper(request).then((data) => {
                     resolve(data);
-                }).catch((error)=>{
+                }).catch((error) => {
                     reject(error.response.status);
                 });
             }).catch(() => {
@@ -116,38 +116,38 @@ class ServerAPI {
         switch (request.requestType.type) {
             case 'POST':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.post(request.url, request.body,{
+                    reqToCoreInstance.post(request.url, request.body, {
                         headers: {
                             auth_token: `bearer_${localStorage.getItem("base_token")}`,
                         }
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        this.requestErrorHandler(error.response.status, request,resolve,reject);
+                        this.requestErrorHandler(error.response.status, request, resolve, reject);
                     })
                 })
             case 'GET':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.get(request.url,{
+                    reqToCoreInstance.get(request.url, {
                         headers: {
                             auth_token: `bearer_${localStorage.getItem("base_token")}`,
                         }
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        this.requestErrorHandler(error.response.status, request,resolve,reject);
+                        this.requestErrorHandler(error.response.status, request, resolve, reject);
                     })
                 })
             case 'PUT':
                 return new Promise((resolve, reject) => {
-                    reqToCoreInstance.put(request.url, request.body,{
+                    reqToCoreInstance.put(request.url, request.body, {
                         headers: {
                             auth_token: `bearer_${localStorage.getItem("base_token")}`,
                         }
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        this.requestErrorHandler(error.response.status, request,resolve,reject);
+                        this.requestErrorHandler(error.response.status, request, resolve, reject);
                     })
                 })
             case 'DELETE':
@@ -159,7 +159,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        this.requestErrorHandler(error.response.status, request,resolve,reject);
+                        this.requestErrorHandler(error.response.status, request, resolve, reject);
                     })
                 })
         }

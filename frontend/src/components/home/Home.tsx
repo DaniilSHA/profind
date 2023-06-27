@@ -4,6 +4,7 @@ import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {authService} from "../../api/auth/AuthService";
 import {serverAPI, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
+import {formService} from "../../api/form/FormService";
 
 
 function Home() {
@@ -16,22 +17,10 @@ function Home() {
         navigate('/');
     }
 
-    const handleTest = () => {
+    const startProfile = () => {
         serverAPI.requestWrapper({
             requestType: {
                 type: 'GET',
-            },
-            url: URL_TOKEN_PROFILE,
-            body: null,
-        }).then(data => {
-            console.log(data);
-        }).catch(error => {
-            console.log(error);
-        })
-
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'POST',
             },
             url: URL_TOKEN_PROFILE,
             body: {
@@ -43,11 +32,13 @@ function Home() {
                 no_valid: '',
             },
         }).then(data => {
-            console.log(data);
+            formService.updateData(data.data);
+            formService.updateMeta(data.status);
         }).catch(error => {
-            console.log(error);
+            formService.updateMeta(error.status);
         })
     }
+
     return (
         <>
             <div className={styles.container}>
@@ -56,15 +47,16 @@ function Home() {
                         <ul className={styles.nav__list}>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='find'
-                                         onClick={handleTest} className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
+                                         className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
                             </li>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='matches'
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>matches</NavLink>
                             </li>
                             <li className={styles.nav__list__item}>
-                                <NavLink to='form'
-                                         className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>form</NavLink>
+                                <NavLink to='profile'
+                                         onClick={startProfile}
+                                         className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>profile</NavLink>
                             </li>
                             {(role === 'MODER') &&
                                 <li className={styles.nav__list__item}>
@@ -84,7 +76,9 @@ function Home() {
                         </ul>
                     </nav>
                 </header>
-                <Outlet/>
+                <main className={styles.main}>
+                    <Outlet/>
+                </main>
             </div>
         </>
     );

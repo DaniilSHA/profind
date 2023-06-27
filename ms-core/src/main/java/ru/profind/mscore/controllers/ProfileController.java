@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.profind.mscore.domain.Profile;
+import ru.profind.mscore.domain.ProfileOK;
 import ru.profind.mscore.domain.ProfileGoal;
 import ru.profind.mscore.domain.ProfileProgramLang;
 import ru.profind.mscore.domain.ProfileStatus;
@@ -60,7 +60,7 @@ public class ProfileController
             ProfileStatus profileStatusParse = ProfileStatus.valueOf(profileRequestDto.getStatus());
             ProfileProgramLang profileProgramLangParse = ProfileProgramLang.valueOf(profileRequestDto.getProgram_language());
 
-            profileService.save(Profile.builder()
+            profileService.save(ProfileOK.builder()
                     .username(username)
                     .name(profileRequestDto.getName())
                     .about(profileRequestDto.getAbout())
@@ -84,7 +84,7 @@ public class ProfileController
 
         String username = (String) usernameObj;
 
-        Profile profile = profileService.getProfile(username);
+        ProfileOK profile = profileService.getProfile(username);
         if (profile == null)
             throw new NotAcceptableException();
 

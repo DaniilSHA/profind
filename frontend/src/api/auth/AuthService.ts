@@ -1,9 +1,9 @@
-import {serverAPI} from "../ServerAPI";
+import {serverAPI, URL_TOKEN_PROFILE} from "../ServerAPI";
 import jwt_decode from 'jwt-decode';
 import {store} from "../../redux/store";
 import * as auth from "../../redux/auth/authActions";
 import {Profile} from "../../redux/auth/authActions";
-import {useNavigate} from "react-router-dom";
+import {formService} from "../form/FormService";
 
 export const BASE_TOKEN_KEY = 'base_token';
 export const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -17,6 +17,7 @@ export class AuthService {
         let base_token_item = window.localStorage.getItem(BASE_TOKEN_KEY);
         let base_token: string;
         base_token_item === null ? base_token = '' : base_token = base_token_item;
+        const state = store.getState();
 
         serverAPI.tokenCheck(base_token).then((result) => {
             if (result) {
@@ -29,6 +30,26 @@ export class AuthService {
                 }))
             }
         });
+
+        serverAPI.requestWrapper({
+            requestType: {
+                type: 'GET',
+            },
+            url: URL_TOKEN_PROFILE,
+            body: {
+                status: 'NEW',
+                name: '',
+                about: '',
+                goal: 'STUDENT',
+                program_language: 'JAVA',
+                no_valid: '',
+            },
+        }).then(data => {
+            formService.updateData(data.data);
+            formService.updateMeta(data.status);
+        }).catch(error => {
+            formService.updateMeta(error.status);
+        })
     }
 
     public register(): void {
@@ -65,6 +86,7 @@ export class AuthService {
     public logout(): void {
         this.saveTokens('','');
         store.dispatch(auth.logout());
+        window.location.href = '/';
     }
 
     public saveTokens(base_token:string, refresh_token:string): void {
