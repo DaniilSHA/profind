@@ -1,0 +1,1 @@
+C:\Users\User\.jdks\corretto-17.0.7\bin\java -jar ms-core-0.0.1-SNAPSHOT.jar

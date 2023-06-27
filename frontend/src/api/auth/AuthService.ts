@@ -1,11 +1,12 @@
-import {serverAPI} from "./ServerAPI";
+import {serverAPI, URL_TOKEN_PROFILE} from "../ServerAPI";
 import jwt_decode from 'jwt-decode';
 import {store} from "../../redux/store";
-import * as auth from "../../redux/authActions";
-import {Profile} from "../../redux/authActions";
+import * as auth from "../../redux/auth/authActions";
+import {Profile} from "../../redux/auth/authActions";
+import {formService} from "../form/FormService";
 
-const BASE_TOKEN_KEY = 'base_token';
-const REFRESH_TOKEN_KEY = 'refresh_token';
+export const BASE_TOKEN_KEY = 'base_token';
+export const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export class AuthService {
     constructor() {
@@ -16,6 +17,7 @@ export class AuthService {
         let base_token_item = window.localStorage.getItem(BASE_TOKEN_KEY);
         let base_token: string;
         base_token_item === null ? base_token = '' : base_token = base_token_item;
+        const state = store.getState();
 
         serverAPI.tokenCheck(base_token).then((result) => {
             if (result) {
@@ -28,6 +30,19 @@ export class AuthService {
                 }))
             }
         });
+
+        serverAPI.requestWrapper({
+            requestType: {
+                type: 'GET',
+            },
+            url: URL_TOKEN_PROFILE,
+            body: null,
+        }).then(data => {
+            formService.updateData(data.data);
+            formService.updateMeta(data.status);
+        }).catch(error => {
+            formService.updateMeta(error.status);
+        })
     }
 
     public register(): void {
@@ -49,8 +64,7 @@ export class AuthService {
                 store.dispatch(auth.loginFailure('Логин/пароль введены неправильно.'))
             }
             if (typeof result !== "string") {
-                localStorage.setItem(BASE_TOKEN_KEY, result.base_token);
-                localStorage.setItem(REFRESH_TOKEN_KEY, result.refresh_token);
+                this.saveTokens(result.base_token,result.refresh_token);
                 const tokenInfo: Profile = jwt_decode(result.base_token);
                 store.dispatch(auth.loginSuccess({
                     profileData: {
@@ -60,6 +74,17 @@ export class AuthService {
                 }))
             }
         })
+    }
+
+    public logout(): void {
+        this.saveTokens('','');
+        store.dispatch(auth.logout());
+        window.location.href = '/';
+    }
+
+    public saveTokens(base_token:string, refresh_token:string): void {
+        localStorage.setItem(BASE_TOKEN_KEY, base_token);
+        localStorage.setItem(REFRESH_TOKEN_KEY, refresh_token);
     }
 }
 

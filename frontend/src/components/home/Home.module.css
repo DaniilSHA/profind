@@ -1,86 +1,72 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
-
-*, *:after, *:before {
-    box-sizing: border-box;
-    margin: 0;
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
-.login {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 300px;
-    padding: 10px 20px;
-    background: #f4f7f8;
-    border-radius: 8px;
+.nav__list {
+    margin-top: 50px;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
 }
-
-.title {
-    display: block;
-    text-align: center;
+.activeLink {
+    display: inline-block;
+    padding: 1.1em;
+    transition: all .25s ease-in-out;
+    color: #555;
+    font-size: 18px;
     font-weight: 700;
-    font-size: 24px;
-    margin-bottom: 50px;
-}
-
-.formLabel {
-    display: block;
-    font-weight: 700;
-    font-size: 16px;
-}
-
-.formField {
-    display: block;
-    width: 100%;
-    border: none;
-    font-size: 16px;
-    height: auto;
-    outline: 0;
-    padding: 8px 12px;
-    background-color: #e8eeef;
-    color: #8a97a0;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
-
-.formError {
-    font-size: 12px;
-    font-weight: 700;
-    color: red;
-    margin-top: -7px;
-    margin-bottom: 15px;
-}
-
-.btn {
-    width: 100px;
-    background: #27AE60;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 1px;
-    cursor: pointer;
-    padding: 10px;
-    margin: 10px 27%;
     text-decoration: none;
-    font-size: 14px;
-    transition: 0.3s all;
+}
+.link_nonclick {
+    display: block;
+    padding: .75em 1.5em;
+    transition: all .25s ease-in-out;
+    color: #555;
+}
+.link_span {
+    font-size: 12px;
+    margin: 0 7%;
+}
+.link {
+    display: block;
+    padding: 1.5em ;
+    transition: all .25s ease-in-out;
+    color: #555;
+    text-decoration: none;
+}
+.logout {
+    display: block;
+    padding: 1.5em 0.5em;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+    color: #555;
+}
+.logout:active {
+    font-size: 18px;
+    font-weight: 700;
 
 }
-
-.btn:hover {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
-    transition: 0.3s all;
+.nav__list__item {
+    border-style: solid;
+    border-width: 0 0 1px;
 }
 
-.bg {
-    position: absolute;
-    width:100%;
-    background:#000;
-    opacity:0.5;
-    height: 100vh;
+.nav {
+    background-color: #f5f5f5;
 }
-body {
-    overflow: hidden;
+
+.nav .nav__list__item {
+    border-color: #e5e5e5;
+}
+
+.main {
+    margin-top: 70px;
+    width: 100%;
+    height: 70vh;
+    border-style: solid;
+    border-width: 1px 0 1px;
+    border-color: #e5e5e5;
+    border-radius: 15px;
 }
