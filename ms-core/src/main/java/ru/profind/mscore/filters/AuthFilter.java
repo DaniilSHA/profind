@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.profind.mscore.servise.JwtPrincipal;
 import ru.profind.mscore.servise.JwtService;
 
 import java.io.IOException;
@@ -40,14 +41,15 @@ public class AuthFilter implements Filter
             return;
         }
 
-        String username = jwtService.validate(authToken.split("_")[1]);
-        if (username == null)
+        JwtPrincipal jwtPrincipal = jwtService.validate(authToken.split("_")[1]);
+        if (jwtPrincipal == null)
         {
             invalidateResponse(response);
             return;
         }
 
-        request.setAttribute("username", username);
+        request.setAttribute("username", jwtPrincipal.getUsername());
+        request.setAttribute("role", jwtPrincipal.getUserRole());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
