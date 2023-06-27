@@ -25,7 +25,7 @@ function ProfileNC() {
                         },
                         url: URL_TOKEN_PROFILE,
                         body: {
-                            status: 'NO_VALID',
+                            status: 'NEW',
                             name: values.username,
                             about: values.about,
                             goal: values.goal,
@@ -34,7 +34,7 @@ function ProfileNC() {
                         },
                     }).then(data => {
                         formService.updateData({
-                            status: 'NO_VALID',
+                            status: 'NEW',
                             name: values.username,
                             about: values.about,
                             goal: values.goal,

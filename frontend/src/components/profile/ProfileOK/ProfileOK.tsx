@@ -4,7 +4,6 @@ import {useSelector} from "react-redux";
 
 function ProfileOK() {
     const userData = useSelector((state: any) => (state.profile.profile));
-
     return <>
         <div className={styles.main}>
             <div className={styles.item}>

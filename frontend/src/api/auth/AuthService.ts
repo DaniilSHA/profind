@@ -36,14 +36,7 @@ export class AuthService {
                 type: 'GET',
             },
             url: URL_TOKEN_PROFILE,
-            body: {
-                status: 'NEW',
-                name: '',
-                about: '',
-                goal: 'STUDENT',
-                program_language: 'JAVA',
-                no_valid: '',
-            },
+            body: null,
         }).then(data => {
             formService.updateData(data.data);
             formService.updateMeta(data.status);

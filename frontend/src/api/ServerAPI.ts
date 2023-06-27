@@ -123,7 +123,7 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        this.requestErrorHandler(error.response.status, request, resolve, reject);
+                        setTimeout(()=>{this.requestErrorHandler(error.response.status, request, resolve, reject)},500);
                     })
                 })
             case 'GET':
