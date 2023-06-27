@@ -69,7 +69,7 @@ export class AuthService {
                 store.dispatch(auth.loginSuccess({
                     profileData: {
                         username: tokenInfo.username,
-                        role: tokenInfo.role,
+                        role: 'MODER',
                     }
                 }))
             }
