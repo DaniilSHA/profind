@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.profind.mscore.domain.*;
 import ru.profind.mscore.dto.requset.ProfileRequest;
 import ru.profind.mscore.dto.response.ProfileResponse;
-import ru.profind.mscore.exception.ConflictException;
-import ru.profind.mscore.exception.NoContentException;
-import ru.profind.mscore.exception.NotAcceptableException;
-import ru.profind.mscore.exception.ServerException;
+import ru.profind.mscore.exception.*;
 import ru.profind.mscore.servise.ProfileService;
 
 @RestController
@@ -85,9 +82,21 @@ public class ProfileController
             throw new ServerException();
 
         String username = (String) usernameObj;
-        UserRole userRole = UserRole.valueOf((String) roleObj);
+        UserRole userRole = ((UserRole) roleObj);
 
-        Profile profile = profileService.getProfile(username);
+        String targetUsername = request.getParameter("targetUsername");
+
+        Profile profile;
+        if (targetUsername != null) {
+            if (userRole == UserRole.MODER || userRole == UserRole.ADMIN) {
+                profile = profileService.getProfile(targetUsername);
+            }
+            else throw new NoAuthException();
+        } else
+        {
+            profile = profileService.getProfile(username);
+        }
+
         if (profile == null)
             throw new NotAcceptableException();
 
