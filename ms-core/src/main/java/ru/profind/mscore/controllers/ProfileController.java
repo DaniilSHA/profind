@@ -68,6 +68,10 @@ public class ProfileController
                     .profileStatus(profileStatusParse)
                     .profileGoal(profileGoalParse)
                     .profileProgramLang(profileProgramLangParse)
+                    .vk(profileRequestDto.getContact().getVk())
+                    .telegram(profileRequestDto.getContact().getTelegram())
+                    .phone(profileRequestDto.getContact().getPhone())
+                    .email(profileRequestDto.getContact().getEmail())
                     .build());
         } catch (Exception e) {
             throw new ConflictException();
@@ -100,6 +104,10 @@ public class ProfileController
             profile.setProfileStatus(profileStatusParse);
             profile.setProfileGoal(profileGoalParse);
             profile.setProfileProgramLang(profileProgramLangParse);
+            profile.setVk(profileRequestDto.getContact().getVk());
+            profile.setTelegram(profileRequestDto.getContact().getTelegram());
+            profile.setPhone(profileRequestDto.getContact().getPhone());
+            profile.setEmail(profileRequestDto.getContact().getEmail());
 
             profileService.save(profile);
         } catch (Exception e) {

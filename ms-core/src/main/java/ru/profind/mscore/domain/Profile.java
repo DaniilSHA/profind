@@ -39,4 +39,9 @@ public class Profile implements Serializable
 
     @Enumerated(EnumType.STRING)
     private ProfileProgramLang profileProgramLang;
+
+    private String vk;
+    private String telegram;
+    private String phone;
+    private String email;
 }

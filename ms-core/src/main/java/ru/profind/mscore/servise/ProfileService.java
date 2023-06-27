@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.profind.mscore.domain.Profile;
+import ru.profind.mscore.dto.response.ContactResponse;
 import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.repository.ProfileRepository;
 
@@ -21,13 +22,22 @@ public class ProfileService
         if (profileByUsername.isPresent()){
             Profile profile = profileByUsername.get();
 
+            ContactResponse contactResponse = new ContactResponse(
+                    profile.getVk(),
+                    profile.getTelegram(),
+                    profile.getPhone(),
+                    profile.getEmail()
+            );
+
             return new ProfileResponse(
+                    profile.getUsername(),
                     profile.getProfileStatus().toString(),
                     profile.getName(),
                     profile.getAbout(),
                     profile.getProfileGoal().toString(),
                     profile.getProfileProgramLang().toString(),
-                    profile.getNoValidMsg()
+                    profile.getNoValidMsg(),
+                    contactResponse
             );
         } else {
             return null;
