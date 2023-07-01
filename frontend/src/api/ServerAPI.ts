@@ -16,7 +16,9 @@ const URL_TOKEN_REFRESH = `${URL_AUTH_HOST}/refresh`;
 
 export const URL_TOKEN_PROFILE = `${URL_CORE_HOST}/profile`;
 
-export const URL_TOKEN_MODERATION_NEW = `${URL_CORE_HOST}/profile?filterStatus=NEW`;
+export const URL_TOKEN_MODERATION_NEW = `${URL_CORE_HOST}/profiles?filterStatus=NEW`;
+
+export const URL_TOKEN_MODERATION_PUT = `${URL_CORE_HOST}/profile?targetUsername=`;
 
 const reqToCoreInstance = axios.create();
 

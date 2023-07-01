@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import {store} from "./redux/store";
 import {authService} from "./api/auth/AuthService";
 import {serverAPI} from "./api/ServerAPI";
+import {moderationService} from "./api/moderation/ModerationService";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,7 +15,6 @@ const root = ReactDOM.createRoot(
 
 authService.init();
 serverAPI.start();
-
 
 root.render(
     <Provider store={store}>

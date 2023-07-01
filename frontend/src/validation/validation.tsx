@@ -16,3 +16,7 @@ export const validation_profile = yup.object().shape({
     goal: yup.string().required('Выберите роль'),
     program_language: yup.string().required('Выберите язык программирования'),
 })
+
+export const validation_moderation = yup.object().shape({
+    error_msg: yup.string().required('Обязательно для заполнения при отказе валидации.'),
+})

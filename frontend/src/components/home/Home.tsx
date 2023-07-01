@@ -47,13 +47,8 @@ function Home() {
             url: URL_TOKEN_MODERATION_NEW,
             body: null,
         }).then(data => {
-            console.log(data);
             if (data.status === 200) {
-                console.log('gg');
                 moderationService.updateList(data.data);
-            }
-            if (data.status === 204) {
-                console.log(data.status);
             }
         }).catch(error => {
             console.log(error);

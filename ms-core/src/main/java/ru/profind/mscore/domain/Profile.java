@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Data
-public class Moderation implements Serializable
+public class Moditem implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

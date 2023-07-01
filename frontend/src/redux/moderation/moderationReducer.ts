@@ -6,7 +6,7 @@ export const moderationReducer = (state = initialState, action: any) => {
 
         case ADD_ITEMS:
             if (Array.isArray(action.payload)) {
-                return [...state, ...action.payload];
+                return [...action.payload];
             }
             return state;
 

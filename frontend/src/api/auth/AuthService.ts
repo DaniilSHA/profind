@@ -1,9 +1,10 @@
-import {serverAPI, URL_TOKEN_PROFILE} from "../ServerAPI";
+import {serverAPI, URL_TOKEN_MODERATION_NEW, URL_TOKEN_PROFILE} from "../ServerAPI";
 import jwt_decode from 'jwt-decode';
 import {store} from "../../redux/store";
 import * as auth from "../../redux/auth/authActions";
 import {Profile} from "../../redux/auth/authActions";
 import {formService} from "../form/FormService";
+import {moderationService} from "../moderation/ModerationService";
 
 export const BASE_TOKEN_KEY = 'base_token';
 export const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -16,7 +17,7 @@ export class AuthService {
     public init(): void {
         let base_token_item = window.localStorage.getItem(BASE_TOKEN_KEY);
         let base_token: string;
-        let isAuth:boolean = false;
+        let isAuth: boolean = false;
         base_token_item === null ? base_token = '' : base_token = base_token_item;
         const state = store.getState();
 
@@ -33,20 +34,22 @@ export class AuthService {
             }
         });
 
-        setTimeout(()=>{if (isAuth) {
-            serverAPI.requestWrapper({
-                requestType: {
-                    type: 'GET',
-                },
-                url: URL_TOKEN_PROFILE,
-                body: null,
-            }).then(data => {
-                formService.updateData(data.data);
-                formService.updateMeta(data.status);
-            }).catch(error => {
-                formService.updateMeta(error.status);
-            })
-        }},1);
+        setTimeout(() => {
+            if (isAuth) {
+                serverAPI.requestWrapper({
+                    requestType: {
+                        type: 'GET',
+                    },
+                    url: URL_TOKEN_PROFILE,
+                    body: null,
+                }).then(data => {
+                    formService.updateData(data.data);
+                    formService.updateMeta(data.status);
+                }).catch(error => {
+                    formService.updateMeta(error.status);
+                })
+            }
+        }, 1);
     }
 
     public register(): void {
@@ -73,7 +76,7 @@ export class AuthService {
                 store.dispatch(auth.loginSuccess({
                     profileData: {
                         username: tokenInfo.username,
-                        role: 'MODER',
+                        role: tokenInfo.role,
                     }
                 }))
             }
