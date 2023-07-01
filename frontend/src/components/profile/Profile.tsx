@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import styles from './Profile.module.css';
-import ProfileNC from "./ProfileNC/ProfileNC";
+import ProfileNotOk from "./ProfileNC/ProfileNotOk";
 import ProfileOK from "./ProfileOK/ProfileOK";
 
 
@@ -13,7 +13,7 @@ function Profile() {
             <div className={styles.item}>STATUS: {userData.status}</div>
             <div className={styles.item}>VALID MESSAGE: {userData.no_valid} </div>
             {userStatus === 200 && <ProfileOK />}
-            {userStatus === 204 && <ProfileNC />}
+            {userStatus === 204 && <ProfileNotOk />}
         </>
     );
 }

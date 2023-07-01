@@ -25,12 +25,16 @@ function Home() {
             url: URL_TOKEN_PROFILE,
             body: null,
         }).then(data => {
-            console.log(data);
-            formService.updateData(data.data);
-            formService.updateMeta(data.status);
+            if (data.status === 200){
+
+                formService.updateData(data.data);
+                formService.updateMeta(data.status);
+            }
+            if (data.status === 204){
+                formService.updateMeta(data.status);
+            }
         }).catch(error => {
             console.log(error);
-            formService.updateMeta(error.status);
         })
     }
 
