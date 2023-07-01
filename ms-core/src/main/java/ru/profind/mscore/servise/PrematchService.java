@@ -4,17 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.profind.mscore.domain.Prematch;
-import ru.profind.mscore.domain.Profile;
-import ru.profind.mscore.domain.ProfileStatus;
-import ru.profind.mscore.dto.response.ContactResponse;
-import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.repository.PrematchRepository;
-import ru.profind.mscore.repository.ProfileRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,13 +15,13 @@ public class PrematchService
 {
     @Autowired private PrematchRepository repository;
 
-    public boolean check(String targetUsername, String swaipUsername) {
-        AtomicBoolean result = new AtomicBoolean(true);
+    public boolean exist(String targetUsername, String swaipUsername) {
+        AtomicBoolean result = new AtomicBoolean(false);
         List<Prematch> list = repository.findAllByTargetUsernameAndSwaipUsername(targetUsername, swaipUsername);
 
         if (list.size() != 0)
         {
-            result.set(false);
+            result.set(true);
         }
 
         return result.get();
@@ -41,7 +34,15 @@ public class PrematchService
                 .targetUsername(targetUsername)
                 .swaipUsername(swaipUsername)
                 .wasLike(wasLike)
+                .isComplete(false)
                 .build());
+    }
+
+    public void complete(String targetUsername, String swaipUsername)
+    {
+        List<Prematch> list = repository.findAllByTargetUsernameAndSwaipUsername(targetUsername, swaipUsername);
+        list.forEach(prematch -> prematch.setComplete(true));
+        repository.saveAllAndFlush(list);
     }
 
     public List<Prematch> findAllWhereTargetUsername(String targetUsername) {

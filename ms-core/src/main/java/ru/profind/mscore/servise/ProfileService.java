@@ -38,7 +38,7 @@ public class ProfileService
                 .toList();
 
 
-        List<String> swaipUsernames = prematchService
+        List<Prematch> prematches = prematchService
                 .findAllWhereTargetUsername(targetUsername)
                 .stream()
                 .filter(prematch -> {
@@ -46,17 +46,27 @@ public class ProfileService
                         return prematch.isWasLike() == wasLike;
                     } else return true;
                 })
-                .map(Prematch::getSwaipUsername)
                 .toList();
 
 
         if (swaipUsers) {
+            List<String> swaipUsernames = prematches
+                    .stream()
+                    .filter(prematch -> !prematch.isComplete())
+                    .map(Prematch::getSwaipUsername)
+                    .toList();
+
             return profiles
                     .stream()
                     .filter(profile -> swaipUsernames.contains(profile.getUsername()))
                     .map(this::toProfileResponse)
                     .collect(Collectors.toList());
         } else {
+            List<String> swaipUsernames = prematches
+                    .stream()
+                    .map(Prematch::getSwaipUsername)
+                    .toList();
+
             return profiles
                     .stream()
                     .filter(profile -> !swaipUsernames.contains(profile.getUsername()))

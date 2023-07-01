@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "prematchs")
+@Table(name = "prematches")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,4 +28,7 @@ public class Prematch implements Serializable
 
     @Column(name = "was_like")
     private boolean wasLike;
+
+    @Column(name = "is_complete")
+    private boolean isComplete;
 }
