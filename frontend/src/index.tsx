@@ -15,6 +15,7 @@ const root = ReactDOM.createRoot(
 authService.init();
 serverAPI.start();
 
+
 root.render(
     <Provider store={store}>
         <App/>

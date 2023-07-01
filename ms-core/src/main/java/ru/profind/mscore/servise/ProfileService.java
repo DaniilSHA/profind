@@ -3,7 +3,7 @@ package ru.profind.mscore.servise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.profind.mscore.domain.Profile;
+import ru.profind.mscore.domain.Moderation;
 import ru.profind.mscore.domain.ProfileStatus;
 import ru.profind.mscore.dto.response.ContactResponse;
 import ru.profind.mscore.dto.response.ProfileResponse;
@@ -28,27 +28,27 @@ public class ProfileService
     }
 
     public ProfileResponse getProfileResponse(String username) {
-        Optional<Profile> profileByUsername = repository.findProfileByUsername(username);
+        Optional<Moderation> profileByUsername = repository.findProfileByUsername(username);
 
         if (profileByUsername.isPresent()){
-            Profile profile = profileByUsername.get();
+            Moderation profile = profileByUsername.get();
             return toProfileResponse(profile);
         } else {
             return null;
         }
     }
 
-    public void save(Profile profile)
+    public void save(Moderation profile)
     {
         repository.saveAndFlush(profile);
     }
 
-    public Profile getProfile(String username) {
-        Optional<Profile> profileByUsername = repository.findProfileByUsername(username);
+    public Moderation getProfile(String username) {
+        Optional<Moderation> profileByUsername = repository.findProfileByUsername(username);
         return profileByUsername.orElse(null);
     }
 
-    private ProfileResponse toProfileResponse(Profile profile) {
+    private ProfileResponse toProfileResponse(Moderation profile) {
         ContactResponse contactResponse = new ContactResponse(
                 profile.getVk(),
                 profile.getTelegram(),

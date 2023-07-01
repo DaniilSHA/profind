@@ -3,8 +3,9 @@ import styles from './Home.module.css';
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {authService} from "../../api/auth/AuthService";
-import {serverAPI, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
+import {serverAPI, URL_TOKEN_MODERATION_NEW, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
 import {formService} from "../../api/form/FormService";
+import {moderationService, ModerationService} from "../../api/moderation/ModerationService";
 
 
 function Home() {
@@ -25,13 +26,34 @@ function Home() {
             url: URL_TOKEN_PROFILE,
             body: null,
         }).then(data => {
-            if (data.status === 200){
+            if (data.status === 200) {
 
                 formService.updateData(data.data);
                 formService.updateMeta(data.status);
             }
-            if (data.status === 204){
+            if (data.status === 204) {
                 formService.updateMeta(data.status);
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    const startModeration = () => {
+        serverAPI.requestWrapper({
+            requestType: {
+                type: 'GET',
+            },
+            url: URL_TOKEN_MODERATION_NEW,
+            body: null,
+        }).then(data => {
+            console.log(data);
+            if (data.status === 200) {
+                console.log('gg');
+                moderationService.updateList(data.data);
+            }
+            if (data.status === 204) {
+                console.log(data.status);
             }
         }).catch(error => {
             console.log(error);
@@ -60,6 +82,7 @@ function Home() {
                             {(role === 'MODER') &&
                                 <li className={styles.nav__list__item}>
                                     <NavLink to='moderation'
+                                             onClick={startModeration}
                                              className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>moderation</NavLink>
                                 </li>
                             }
