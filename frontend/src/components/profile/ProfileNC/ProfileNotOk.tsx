@@ -1,4 +1,3 @@
-import {useSelector} from "react-redux";
 import styles from './ProfileNotOk.module.css';
 import React from "react";
 import {Field, Form, Formik} from "formik";
@@ -6,61 +5,102 @@ import {validation_profile} from "../../../validation/validation";
 import {serverAPI, URL_TOKEN_PROFILE} from "../../../api/ServerAPI";
 import {formService} from "../../../api/form/FormService";
 
-function ProfileNotOk() {
+function ProfileNotOk(props: any) {
 
     return <>
         <div className={styles.main}>
             <Formik
                 validationSchema={validation_profile}
                 initialValues={{
-                    username: '',
-                    about: '',
-                    goal: '',
-                    program_language: '',
-                    vk: '',
-                    telegram: '',
-                    phone: '',
-                    email: '',
+                    username: `${props.initialValues.username}`,
+                    about: `${props.initialValues.about}`,
+                    goal: `${props.initialValues.goal}`,
+                    program_language: `${props.initialValues.program_language}`,
+                    vk: `${props.initialValues.vk}`,
+                    telegram: `${props.initialValues.telegram}`,
+                    phone: `${props.initialValues.phone}`,
+                    email: `${props.initialValues.email}`,
                 }}
                 onSubmit={values => {
-                    serverAPI.requestWrapper({
-                        requestType: {
-                            type: 'POST',
-                        },
-                        url: URL_TOKEN_PROFILE,
-                        body: {
-                            status: 'NEW',
-                            name: values.username,
-                            about: values.about,
-                            goal: values.goal,
-                            program_language: values.program_language,
-                            no_valid: 'Ваш профиль ещё не проверен модератором',
-                            contact: {
-                                vk: values.vk,
-                                telegram: values.telegram,
-                                phone: values.phone,
-                                email: values.email,
-                            }
-                        },
-                    }).then(data => {
-                        formService.updateData({
-                            status: 'NEW',
-                            name: values.username,
-                            about: values.about,
-                            goal: values.goal,
-                            program_language: values.program_language,
-                            no_valid: 'Ваш профиль ещё не проверен модератором',
-                            contact: {
-                                vk: values.vk,
-                                telegram: values.telegram,
-                                phone: values.phone,
-                                email: values.email,
-                            }
+                    if (props.typeRequest === 'post') {
+                        serverAPI.requestWrapper({
+                            requestType: {
+                                type: 'POST',
+                            },
+                            url: URL_TOKEN_PROFILE,
+                            body: {
+                                status: 'NEW',
+                                name: values.username,
+                                about: values.about,
+                                goal: values.goal,
+                                program_language: values.program_language,
+                                no_valid: 'Ваш профиль ещё не проверен модератором',
+                                contact: {
+                                    vk: values.vk,
+                                    telegram: values.telegram,
+                                    phone: values.phone,
+                                    email: values.email,
+                                }
+                            },
+                        }).then(data => {
+                            formService.updateData({
+                                status: 'NEW',
+                                name: values.username,
+                                about: values.about,
+                                goal: values.goal,
+                                program_language: values.program_language,
+                                no_valid: 'Ваш профиль ещё не проверен модератором',
+                                contact: {
+                                    vk: values.vk,
+                                    telegram: values.telegram,
+                                    phone: values.phone,
+                                    email: values.email,
+                                }
+                            })
+                            formService.updateMeta(data.status);
+                        }).catch(error => {
+                            formService.updateMeta(error.status);
                         })
-                        formService.updateMeta(data.status);
-                    }).catch(error => {
-                        formService.updateMeta(error.status);
-                    })
+                    } else {
+                        serverAPI.requestWrapper({
+                            requestType: {
+                                type: 'PUT',
+                            },
+                            url: URL_TOKEN_PROFILE,
+                            body: {
+                                status: 'NEW',
+                                name: values.username,
+                                about: values.about,
+                                goal: values.goal,
+                                program_language: values.program_language,
+                                no_valid: 'Ваш профиль ещё не проверен модератором',
+                                contact: {
+                                    vk: values.vk,
+                                    telegram: values.telegram,
+                                    phone: values.phone,
+                                    email: values.email,
+                                }
+                            },
+                        }).then(data => {
+                            formService.updateData({
+                                status: 'NEW',
+                                name: values.username,
+                                about: values.about,
+                                goal: values.goal,
+                                program_language: values.program_language,
+                                no_valid: 'Ваш профиль ещё не проверен модератором',
+                                contact: {
+                                    vk: values.vk,
+                                    telegram: values.telegram,
+                                    phone: values.phone,
+                                    email: values.email,
+                                }
+                            })
+                            formService.updateMeta(data.status);
+                        }).catch(error => {
+                            formService.updateMeta(error.status);
+                        })
+                    }
                 }}
             >
                 {({errors, touched}) => (

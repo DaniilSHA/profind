@@ -82,7 +82,7 @@ class ServerAPI {
     public refresh(refresh_token: string): Promise<Tokens> {
         return new Promise((resolve, reject) => {
             axios.post(URL_TOKEN_REFRESH, {
-                refresh_token:   refresh_token,
+                refresh_token: refresh_token,
             }).then((data) => {
                 resolve({
                     base_token: data.data.base_token,
@@ -123,7 +123,9 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        setTimeout(()=>{this.requestErrorHandler(error.response.status, request, resolve, reject)},500);
+                        setTimeout(() => {
+                            this.requestErrorHandler(error.response.status, request, resolve, reject)
+                        }, 500);
                     })
                 })
             case 'GET':

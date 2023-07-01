@@ -19,3 +19,21 @@
 .item:first-child {
     margin-top: 30px;
 }
+
+.btn {
+    width: 300px;
+    font-weight: bold;
+    border: 0 none;
+    border-radius: 1px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 50px 35%;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s all;
+    color: #555555;
+}
+.btn:hover {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #555555;
+    transition: 0.3s all;
+}
