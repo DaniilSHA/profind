@@ -1,11 +1,8 @@
 package ru.profind.mscore.servise;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.profind.mscore.domain.*;
 import ru.profind.mscore.dto.response.ContactResponse;
 import ru.profind.mscore.dto.response.ProfileResponse;
