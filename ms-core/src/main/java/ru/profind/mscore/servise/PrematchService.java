@@ -44,4 +44,7 @@ public class PrematchService
                 .build());
     }
 
+    public List<Prematch> findAllWhereTargetUsername(String targetUsername) {
+        return repository.findAllByTargetUsername(targetUsername);
+    }
 }

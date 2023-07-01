@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface PrematchRepository extends JpaRepository<Prematch, Long>
 {
     List<Prematch> findAllByTargetUsernameAndSwaipUsername(String targetUsername, String swaipUsername);
+
+    List<Prematch> findAllByTargetUsername(String targetUsername);
 }
