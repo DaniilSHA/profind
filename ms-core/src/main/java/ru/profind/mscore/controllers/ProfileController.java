@@ -37,7 +37,7 @@ public class ProfileController
     @ResponseStatus(HttpStatus.OK)
     public List<ProfileResponse> getPrematchProfiles(
             HttpServletRequest request,
-            @RequestParam ProfileGoal profileGoal,
+            @RequestParam ProfileGoal goal,
             @RequestParam(required = false) ProfileProgramLang lang,
             @RequestParam boolean swaipUsers,
             @RequestParam(required = false) Boolean wasLike
@@ -49,7 +49,7 @@ public class ProfileController
 
         String username = (String) usernameObj;
 
-        return profileService.getPrematchProfiles(username, profileGoal, lang, swaipUsers, wasLike);
+        return profileService.getPrematchProfiles(username, goal, lang, swaipUsers, wasLike);
     }
 
     @GetMapping("/profile")
