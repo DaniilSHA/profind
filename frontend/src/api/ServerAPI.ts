@@ -7,7 +7,7 @@ import {rejects} from "assert";
 
 
 const URL_AUTH_HOST = `http://localhost:8080`
-const URL_CORE_HOST = `http://localhost:8081`
+export const URL_CORE_HOST = `http://localhost:8081`
 
 const URL_TOKEN_CHECK = `${URL_AUTH_HOST}/check`;
 const URL_TOKEN_REG = `${URL_AUTH_HOST}/register`;

@@ -7,6 +7,7 @@ import Home from "../home/Home";
 import {useSelector} from "react-redux";
 import Profile from "../profile/Profile";
 import Moderation from "../home/moderation/Moderation";
+import Find from "../home/find/Find";
 
 
 const Router = () => {
@@ -28,7 +29,7 @@ const Router = () => {
                 <Route path='*' element={<div> Not found, <a onClick={backToMain}>back to main</a></div>}/>
                 {isAuth &&
                     <Route path='/home' element={<Home/>}>
-                        <Route path='find' element={<div>FIND</div>}/>
+                        <Route path='find' element={<div><Find /></div>}/>
                         <Route path='matches' element={<div>MATCHES</div>}/>
                         <Route path='profile' element={<Profile/>}/>
                         {(currentRole !== 'USER') &&

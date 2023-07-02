@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Data
-public class Moditem implements Serializable
+public class Find implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
