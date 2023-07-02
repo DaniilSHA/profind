@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.profind.mscore.domain.*;
 import ru.profind.mscore.dto.response.ContactResponse;
+import ru.profind.mscore.dto.response.MatchAndProfileResponse;
+import ru.profind.mscore.dto.response.MatchResponse;
 import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.repository.ProfileRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +21,7 @@ public class ProfileService
 {
     @Autowired private ProfileRepository repository;
     @Autowired private PrematchService prematchService;
+    @Autowired private MatchService matchService;
 
     public List<ProfileResponse> getPrematchProfiles(
             String targetUsername,
@@ -75,6 +79,36 @@ public class ProfileService
         }
     }
 
+    public List<MatchAndProfileResponse> getMatchProfiles(String username) {
+        List<MatchAndProfileResponse> result = new ArrayList<>();
+
+        List<String> usernames = new ArrayList<>();
+
+        matchService.findByFirstUsername(username).forEach(match -> {
+            if (!usernames.contains(match.getSecondUsername())) {
+                result.add(
+                        new MatchAndProfileResponse(
+                                toMatchResponse(match),
+                                toProfileResponse(repository.findProfileByUsername(match.getSecondUsername()).orElseThrow()))
+                );
+                usernames.add(match.getSecondUsername());
+            }
+        });
+
+        matchService.findBySecondUsername(username).forEach(match -> {
+            if (!usernames.contains(match.getFirstUsername())) {
+                result.add(
+                        new MatchAndProfileResponse(
+                                toMatchResponse(match),
+                                toProfileResponse(repository.findProfileByUsername(match.getFirstUsername()).orElseThrow()))
+                );
+                usernames.add(match.getFirstUsername());
+            }
+        });
+
+        return result;
+    }
+
     public List<ProfileResponse> getProfiles() {
         return repository.findAll().stream().map(this::toProfileResponse).collect(Collectors.toList());
     }
@@ -121,6 +155,15 @@ public class ProfileService
                 profile.getProfileProgramLang().toString(),
                 profile.getNoValidMsg(),
                 contactResponse
+        );
+    }
+
+    private MatchResponse toMatchResponse(Match match) {
+        return new MatchResponse(
+                match.getFirstUsername(),
+                match.getSecondUsername(),
+                match.isPaymentFirst(),
+                match.isPaymentSecond()
         );
     }
 }

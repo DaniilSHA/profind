@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.profind.mscore.domain.*;
 import ru.profind.mscore.dto.requset.ProfileRequest;
+import ru.profind.mscore.dto.response.MatchAndProfileResponse;
 import ru.profind.mscore.dto.response.ProfileResponse;
 import ru.profind.mscore.exception.*;
 import ru.profind.mscore.servise.ProfileService;
@@ -50,6 +51,19 @@ public class ProfileController
         String username = (String) usernameObj;
 
         return profileService.getPrematchProfiles(username, goal, lang, swaipUsers, wasLike);
+    }
+
+    @GetMapping("/profiles/match")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MatchAndProfileResponse> getMatchProfiles(HttpServletRequest request)
+    {
+        Object usernameObj = request.getAttribute("username");
+        if (usernameObj == null)
+            throw new ServerException();
+
+        String username = (String) usernameObj;
+
+        return profileService.getMatchProfiles(username);
     }
 
     @GetMapping("/profile")
