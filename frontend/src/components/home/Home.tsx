@@ -16,7 +16,7 @@ function Home() {
     const userData = useSelector((state: any) => (state.profile.profile));
 
     const handleLogout = () => {
-        authService.logout();
+        authService.logout ();
         navigate('/');
     }
 
