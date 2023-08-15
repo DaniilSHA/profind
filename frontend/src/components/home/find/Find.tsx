@@ -5,8 +5,6 @@ import {useSelector} from "react-redux";
 function Find() {
     const [usersList, setUsersList] = useState(useSelector((state: any) => (state.find)));
     const [currentId, setCurrentId] = useState(0);
-    console.log(usersList);
-
 
     return (
         <>

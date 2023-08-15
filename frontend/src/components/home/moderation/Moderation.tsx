@@ -6,10 +6,15 @@ import {validation_moderation, validation_profile} from "../../../validation/val
 import styles from "./Moderation.module.css"
 import {serverAPI, URL_TOKEN_MODERATION_PUT, URL_TOKEN_PROFILE} from "../../../api/ServerAPI";
 import {formService} from "../../../api/form/FormService";
+import {store} from "../../../redux/store";
 
 function Moderation() {
 
     const [usersList, setUsersList] = useState(useSelector((state: any) => (state.moderation)));
+    setTimeout(()=>{
+        const storeState = store.getState();
+        setUsersList(storeState.moderation);
+    },1000);
     const [currentId, setCurrentId] = useState(0);
 
     function isArrayEmpty(arr: []) {

@@ -3,18 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
+import {Provider, useSelector} from "react-redux";
 import {store} from "./redux/store";
 import {authService} from "./api/auth/AuthService";
 import {serverAPI} from "./api/ServerAPI";
-import {moderationService} from "./api/moderation/ModerationService";
+import {defaultService} from "./api/default/DefautlService";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
-
-authService.init();
-serverAPI.start();
 
 root.render(
     <Provider store={store}>

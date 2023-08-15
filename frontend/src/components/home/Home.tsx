@@ -13,65 +13,10 @@ function Home() {
     const navigate = useNavigate();
     const username = useSelector((state: any) => state.authLog.profileData.profile.username);
     const role = useSelector((state: any) => state.authLog.profileData.profile.role);
-    const userData = useSelector((state: any) => (state.profile.profile));
 
     const handleLogout = () => {
         authService.logout ();
         navigate('/');
-    }
-
-
-    const startModeration = () => {
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'GET',
-            },
-            url: URL_TOKEN_MODERATION_NEW,
-            body: null,
-        }).then(data => {
-            if (data.status === 200) {
-                moderationService.updateList(data.data);
-            }
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
-    const startProfile = () => {
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'GET',
-            },
-            url: URL_TOKEN_PROFILE,
-            body: null,
-        }).then(data => {
-            console.log(data);
-            if (data.status === 200) {
-                formService.updateData(data.data);
-                formService.updateMeta(data.status);
-            }
-            if (data.status === 204) {
-                formService.updateMeta(data.status);
-            }
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-    const startFind = () => {
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'GET',
-            },
-            url: ((userData.goal == 'STUDENT') || (userData.goal == 'TEACHER')) ? `${URL_CORE_HOST}/profiles/prematch?goal=${userData.goal}&lang=${userData.program_language}&swaipUsers=false` : `${URL_CORE_HOST}/profiles/prematch?goal=${userData.program_language}&swaipUsers=false`,
-            body: null,
-        }).then(data => {
-            console.log(data);
-            if (data.status === 200) {
-                findService.updateList(data.data);
-            }
-        }).catch(error => {
-            console.log(error);
-        })
     }
 
     return (
@@ -82,7 +27,6 @@ function Home() {
                         <ul className={styles.nav__list}>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='find'
-                                         onClick={startFind}
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
                             </li>
                             <li className={styles.nav__list__item}>
@@ -91,13 +35,11 @@ function Home() {
                             </li>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='profile'
-                                         onClick={startProfile}
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>profile</NavLink>
                             </li>
                             {(role === 'MODER') &&
                                 <li className={styles.nav__list__item}>
                                     <NavLink to='moderation'
-                                             onClick={startModeration}
                                              className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>moderation</NavLink>
                                 </li>
                             }
