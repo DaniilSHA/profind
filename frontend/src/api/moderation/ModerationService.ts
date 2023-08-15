@@ -8,7 +8,7 @@ export class ModerationService {
     }
 
     public updateList(usersList: any[]) {
-        store.dispatch(moderation.addItems(usersList));
+        store.dispatch(moderation.addItemsModer(usersList));
     }
 
 

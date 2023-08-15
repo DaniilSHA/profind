@@ -44,6 +44,7 @@ export class DefaultService {
                 }).then(data => {
                     if (data.status === 200) {
                         moderationService.updateList(data.data);
+                        console.log(data.data);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -55,7 +56,6 @@ export class DefaultService {
         setTimeout(() => {
             storeState = store.getState();
             userData = storeState.profile.profile;
-            console.log(userData);
             serverAPI.requestWrapper({
                 requestType: {
                     type: 'GET',
@@ -70,7 +70,7 @@ export class DefaultService {
             }).catch(error => {
                 console.log(error);
             })
-        }, 1000);
+        }, 50);
     }
 }
 

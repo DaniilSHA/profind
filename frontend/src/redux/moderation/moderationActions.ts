@@ -1,6 +1,6 @@
 import {ProfileState} from "../profile/profileReducer";
 
-export const addItems = (items:ProfileState[]) => ({
-    type: 'ADD_ITEMS',
+export const addItemsModer = (items:ProfileState[]) => ({
+    type: 'ADD_ITEMS_MODER',
     payload: items,
 });

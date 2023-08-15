@@ -7,7 +7,7 @@ export class FindService {
     }
 
     public updateList(usersList: any[]) {
-        store.dispatch(find.addItems(usersList));
+        store.dispatch(find.addItemsFind(usersList));
     }
 
 

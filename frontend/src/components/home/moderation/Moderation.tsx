@@ -11,10 +11,10 @@ import {store} from "../../../redux/store";
 function Moderation() {
 
     const [usersList, setUsersList] = useState(useSelector((state: any) => (state.moderation)));
-    setTimeout(()=>{
+    setTimeout(() => {
         const storeState = store.getState();
         setUsersList(storeState.moderation);
-    },1000);
+    }, 1000);
     const [currentId, setCurrentId] = useState(0);
 
     function isArrayEmpty(arr: []) {
@@ -22,32 +22,29 @@ function Moderation() {
     }
 
     const validateHandler = (status: string, msg: string): void => {
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'PUT',
-            },
-            url: `${URL_TOKEN_MODERATION_PUT}${usersList[currentId].username}`,
-            body: {
-                status: status,
-                name: usersList[currentId].name,
-                about: usersList[currentId].about,
-                goal: usersList[currentId].goal,
-                program_language: usersList[currentId].program_language,
-                no_valid: msg,
-                contact: {
-                    vk: usersList[currentId].contact.vk,
-                    telegram: usersList[currentId].contact.telegram,
-                    phone: usersList[currentId].contact.phone,
-                    email: usersList[currentId].contact.email,
-                }
-            },
-        }).catch(error => {
-            console.log(error);
-        })
-        if (usersList[currentId + 1]) {
-            setCurrentId(currentId + 1);
-        } else {
-            setUsersList([]);
+        if (!isArrayEmpty(usersList)) {
+            serverAPI.requestWrapper({
+                requestType: {
+                    type: 'PUT',
+                },
+                url: `${URL_TOKEN_MODERATION_PUT}${usersList[0].username}`,
+                body: {
+                    status: status,
+                    name: usersList[0].name,
+                    about: usersList[0].about,
+                    goal: usersList[0].goal,
+                    program_language: usersList[0].program_language,
+                    no_valid: msg,
+                    contact: {
+                        vk: usersList[0].contact.vk,
+                        telegram: usersList[0].contact.telegram,
+                        phone: usersList[0].contact.phone,
+                        email: usersList[0].contact.email,
+                    }
+                },
+            }).catch(error => {
+                console.log(error);
+            })
         }
     }
 

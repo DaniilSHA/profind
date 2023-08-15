@@ -29,7 +29,6 @@ function Login() {
                 url: URL_TOKEN_PROFILE,
                 body: null,
             }).then(data => {
-                console.log(data);
                 if (data.status === 200) {
                     formService.updateData(data.data);
                     formService.updateMeta(data.status);
