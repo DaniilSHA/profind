@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './Reg.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
-import {validation_reg} from "../../validation/validation";
+import {validation_reg} from "../../../validation/validation";
 import {useDispatch, useSelector} from "react-redux";
-import * as auth from '../../redux/auth/authActions';
-import {authService} from "../../api/auth/AuthService";
+import * as auth from '../../../redux/auth/authActions';
+import {authService} from "../../../api/auth/AuthService";
 
 
 function Reg() {

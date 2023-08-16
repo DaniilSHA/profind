@@ -7,7 +7,7 @@ import {rejects} from "assert";
 
 
 const URL_AUTH_HOST = `http://localhost:8080`
-const URL_CORE_HOST = `http://localhost:8081`
+export const URL_CORE_HOST = `http://localhost:8081`
 
 const URL_TOKEN_CHECK = `${URL_AUTH_HOST}/check`;
 const URL_TOKEN_REG = `${URL_AUTH_HOST}/register`;
@@ -15,6 +15,10 @@ const URL_TOKEN_LOG = `${URL_AUTH_HOST}/login`;
 const URL_TOKEN_REFRESH = `${URL_AUTH_HOST}/refresh`;
 
 export const URL_TOKEN_PROFILE = `${URL_CORE_HOST}/profile`;
+
+export const URL_TOKEN_MODERATION_NEW = `${URL_CORE_HOST}/profiles?filterStatus=NEW`;
+
+export const URL_TOKEN_MODERATION_PUT = `${URL_CORE_HOST}/profile?targetUsername=`;
 
 const reqToCoreInstance = axios.create();
 
@@ -123,7 +127,9 @@ class ServerAPI {
                     }).then((data) => {
                         resolve(data);
                     }).catch(error => {
-                        setTimeout(()=>{this.requestErrorHandler(error.response.status, request, resolve, reject)},500);
+                        setTimeout(() => {
+                            this.requestErrorHandler(error.response.status, request, resolve, reject)
+                        }, 500);
                     })
                 })
             case 'GET':

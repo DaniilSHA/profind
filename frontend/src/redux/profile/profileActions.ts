@@ -10,6 +10,12 @@ export const profileUpdate = (profile: any) => {
             goal: profile.goal,
             program_language: profile.program_language,
             no_valid: profile.no_valid,
+            contact: {
+                vk: profile.contact.vk,
+                telegram: profile.contact.telegram,
+                phone: profile.contact.phone,
+                email: profile.contact.email,
+            }
         },
     };
 };

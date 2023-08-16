@@ -5,6 +5,12 @@ export type Profile = {
     goal: 'STUDENT' | 'TEACHER' | 'STARTUP_PLAYER' | 'STARTUP_BOSS' | 'INVESTOR' | null,
     program_language: 'JAVA' | 'JS' | 'PYTHON' | null,
     no_valid: string,
+    contact: {
+        vk: string | null,
+        telegram: string | null,
+        phone: string | null,
+        email: string | null,
+    }
 }
 
 export type ProfileState = {
@@ -22,6 +28,12 @@ const initialState: ProfileState = {
         goal: null,
         program_language: null,
         no_valid: '',
+        contact: {
+            vk: null,
+            telegram: null,
+            phone: null,
+            email: null,
+        }
     },
     meta: {
         error: null,
@@ -44,6 +56,12 @@ export const profileReducer = (state: ProfileState = initialState, action: any) 
                     goal: action.profile.goal,
                     program_language: action.profile.program_language,
                     no_valid: action.profile.no_valid,
+                    contact: {
+                        vk: action.profile.contact.vk,
+                        telegram: action.profile.contact.telegram,
+                        phone: action.profile.contact.phone,
+                        email: action.profile.contact.email,
+                    }
                 },
             }
 

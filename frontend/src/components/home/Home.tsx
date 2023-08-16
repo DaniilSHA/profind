@@ -3,8 +3,12 @@ import styles from './Home.module.css';
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {authService} from "../../api/auth/AuthService";
-import {serverAPI, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
+import {serverAPI, URL_CORE_HOST, URL_TOKEN_MODERATION_NEW, URL_TOKEN_PROFILE} from "../../api/ServerAPI";
 import {formService} from "../../api/form/FormService";
+import {moderationService, ModerationService} from "../../api/moderation/ModerationService";
+import {findService} from "../../api/find/FindService";
+import {store} from "../../redux/store";
+import {defaultService} from "../../api/default/DefautlService";
 
 
 function Home() {
@@ -17,21 +21,16 @@ function Home() {
         navigate('/');
     }
 
-    const startProfile = () => {
-        serverAPI.requestWrapper({
-            requestType: {
-                type: 'GET',
-            },
-            url: URL_TOKEN_PROFILE,
-            body: null,
-        }).then(data => {
-            console.log(data);
-            formService.updateData(data.data);
-            formService.updateMeta(data.status);
-        }).catch(error => {
-            console.log(error);
-            formService.updateMeta(error.status);
-        })
+    const handleFind = () => {
+        defaultService.findInit();
+    }
+
+    const handleProfile = () => {
+        defaultService.profileInit();
+    }
+
+    const handleModeration = () => {
+        defaultService.moderationInit();
     }
 
     return (
@@ -42,6 +41,7 @@ function Home() {
                         <ul className={styles.nav__list}>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='find'
+                                         onClick={handleFind}
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>find</NavLink>
                             </li>
                             <li className={styles.nav__list__item}>
@@ -50,20 +50,21 @@ function Home() {
                             </li>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='profile'
-                                         onClick={startProfile}
+                                         onClick={handleProfile}
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>profile</NavLink>
                             </li>
                             {(role === 'MODER') &&
                                 <li className={styles.nav__list__item}>
                                     <NavLink to='moderation'
+                                             onClick={handleModeration}
                                              className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>moderation</NavLink>
                                 </li>
                             }
                             <li className={styles.nav__list__item}>
                                 <a className={styles.link_nonclick}>
-                                    <span className={styles.link_span}>username:</span>
+                                    <span className={styles.link_span}>username:
                                     <br/>
-                                    {username}
+                                    <span className={styles.link_span_username}>{username}</span></span>
                                 </a>
                             </li>
                             <li className={styles.nav__list__item}><a className={styles.logout}

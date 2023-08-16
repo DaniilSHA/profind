@@ -104,7 +104,7 @@ public class ProfileController
             ProfileStatus profileStatusParse = ProfileStatus.valueOf(profileRequestDto.getStatus());
             ProfileProgramLang profileProgramLangParse = ProfileProgramLang.valueOf(profileRequestDto.getProgram_language());
 
-            profileService.save(Profile.builder()
+            profileService.save(Find.builder()
                     .username(username)
                     .name(profileRequestDto.getName())
                     .about(profileRequestDto.getAbout())
@@ -136,7 +136,7 @@ public class ProfileController
 
         String targetUsername = request.getParameter("targetUsername");
 
-        Profile profile;
+        Find profile;
         if (targetUsername != null) {
             if (userRole == UserRole.MODER || userRole == UserRole.ADMIN) {
                 profile = profileService.getProfile(targetUsername);

@@ -1,9 +1,9 @@
 .main {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    margin-left: 5%;
 }
 .item {
+
     margin: 10px auto 0 auto;
     width: 500px;
     padding: 20px;
@@ -15,4 +15,13 @@
 }
 .item:first-child {
     margin-top: 100px;
+}
+.itemWrapper {
+    margin-top: 65px;
+}
+.itemLabel {
+    display: block;
+    margin-left: 40%;
+    font-weight: 700;
+    font-size: 20px;
 }

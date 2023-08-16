@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import styles from './Login.module.css';
 import {Formik, Form, Field} from 'formik';
 import {useNavigate} from "react-router-dom";
-import {validation_log} from "../../validation/validation";
-import {authService} from "../../api/auth/AuthService";
+import {validation_log} from "../../../validation/validation";
+import {authService} from "../../../api/auth/AuthService";
 import {useDispatch, useSelector} from "react-redux";
-import * as auth from "../../redux/auth/authActions";
+import * as auth from "../../../redux/auth/authActions";
+import {serverAPI, URL_TOKEN_PROFILE} from "../../../api/ServerAPI";
+import {formService} from "../../../api/form/FormService";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,10 +20,26 @@ function Login() {
         dispatch(auth.loginFailure(''));
     }
 
-
     useEffect(() => {
         if (isAuth) {
-            navigate('/home');
+            serverAPI.requestWrapper({
+                requestType: {
+                    type: 'GET',
+                },
+                url: URL_TOKEN_PROFILE,
+                body: null,
+            }).then(data => {
+                if (data.status === 200) {
+                    formService.updateData(data.data);
+                    formService.updateMeta(data.status);
+                }
+                if (data.status === 204) {
+                    formService.updateMeta(data.status);
+                }
+                navigate('/home')
+            }).catch(error => {
+                console.log(error);
+            })
         }
     }, [isAuth, navigate]);
 
