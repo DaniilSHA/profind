@@ -6,6 +6,7 @@ import Finditem from "./findItem/Finditem";
 import {serverAPI, URL_CORE_HOST} from "../../../api/ServerAPI";
 import {findService} from "../../../api/find/FindService";
 import {useNavigate} from "react-router-dom";
+import {defaultService} from "../../../api/default/DefautlService";
 
 function Find() {
     const userData = useSelector((state: any) => (state.profile.profile));
@@ -16,7 +17,6 @@ function Find() {
         const storeState = store.getState();
         setUsersList(storeState.find);
     }, 50);
-    console.log(usersList);
 
     function isArrayEmpty(arr: any[]) {
         return arr.length === 0;
@@ -33,61 +33,18 @@ function Find() {
                 },
                 url: `${URL_CORE_HOST}/prematch`,
                 body: {
-                    "targetUsername": currentUser,
-                    "swaipUsername": usersList[0].username,
+                    "targetUsername": usersList[0].username,
+                    "swaipUsername": currentUser,
                     "wasLike": type,
                 },
             }).then(data => {
                 if (data.status === 200) {
-                    findService.updateList(data.data);
+                    defaultService.findInit();
                 }
             }).catch(error => {
                 console.log(error);
             })
         }
-
-        setTimeout(() => {
-            let filterGoal;
-            if (userData.status == 'VALID') {
-                switch (userData.goal) {
-                    case 'STUDENT':
-                        filterGoal = 'TEACHER';
-                        break;
-                    case 'TEACHER':
-                        filterGoal = 'STUDENT';
-                        break;
-                    case 'STARTUP_PLAYER':
-                        filterGoal = 'STARTUP_PLAYER';
-                        break;
-                    case 'STARTUP_BOSS':
-                        filterGoal = 'INVESTOR';
-                        break;
-                    case 'INVESTOR':
-                        filterGoal = 'STARTUP_BOSS';
-                        break;
-                    default:
-                        filterGoal = userData.goal;
-                }
-                serverAPI.requestWrapper({
-                    requestType: {
-                        type: 'GET',
-                    },
-                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
-                    body: null,
-                }).then(data => {
-                    console.log(data);
-                    if (data.status === 200) {
-                        findService.updateList(data.data);
-                    }
-                }).catch(error => {
-                    console.log(error);
-                })
-                setTimeout(() => {
-                    const storeState = store.getState();
-                    setUsersList(storeState.find);
-                }, 50);
-            }
-        }, 50);
     }
 
     const navProfile = () => {

@@ -3,6 +3,8 @@ import {moderationService} from "../moderation/ModerationService";
 import {formService} from "../form/FormService";
 import {findService} from "../find/FindService";
 import {store} from "../../redux/store";
+import {prematchService} from "../prematch/PrematchService";
+import {matchService} from "../match/MatchService";
 
 export class DefaultService {
     constructor() {
@@ -17,7 +19,6 @@ export class DefaultService {
             url: URL_TOKEN_PROFILE,
             body: null,
         }).then(data => {
-            console.log(data);
             if (data.status === 200) {
                 formService.updateData(data.data);
                 formService.updateMeta(data.status);
@@ -43,7 +44,6 @@ export class DefaultService {
                 }).then(data => {
                     if (data.status === 200) {
                         moderationService.updateList(data.data);
-                        console.log(data.data);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -82,10 +82,9 @@ export class DefaultService {
                     requestType: {
                         type: 'GET',
                     },
-                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
+                    url: (filterGoal === 'INVESTOR') ? `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&swaipUsers=false` : `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
                     body: null,
                 }).then(data => {
-                    console.log(data);
                     if (data.status === 200) {
                         findService.updateList(data.data);
                     }
@@ -95,6 +94,69 @@ export class DefaultService {
             }
         }, 50);
     }
+
+    public prematchInit() {
+        setTimeout(() => {
+            let userData, storeState, filterGoal;
+            storeState = store.getState();
+            userData = storeState.profile.profile;
+            if (userData.status == 'VALID') {
+                switch (userData.goal) {
+                    case 'STUDENT':
+                        filterGoal = 'TEACHER';
+                        break;
+                    case 'TEACHER':
+                        filterGoal = 'STUDENT';
+                        break;
+                    case 'STARTUP_PLAYER':
+                        filterGoal = 'STARTUP_PLAYER';
+                        break;
+                    case 'STARTUP_BOSS':
+                        filterGoal = 'INVESTOR';
+                        break;
+                    case 'INVESTOR':
+                        filterGoal = 'STARTUP_BOSS';
+                        break;
+                    default:
+                        filterGoal = userData.goal;
+                }
+                serverAPI.requestWrapper({
+                    requestType: {
+                        type: 'GET',
+                    },
+                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&swaipUsers=true&wasLike=true`,
+                    body: null,
+                }).then(data => {
+                    if (data.status === 200) {
+                        prematchService.updateList(data.data);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            }
+        }, 50);
+    }
+
+    public matchInit() {
+        setTimeout(() => {
+                serverAPI.requestWrapper({
+                    requestType: {
+                        type: 'GET',
+                    },
+                    url: `${URL_CORE_HOST}/profiles/match`,
+                    body: null,
+                }).then(data => {
+                    console.log(data);
+                    if (data.status === 200) {
+                        console.log(data);
+                        matchService.updateList(data.data);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+        }, 50);
+    }
+
     public init() {
         let userData, storeState, filterGoal;
 
@@ -104,8 +166,13 @@ export class DefaultService {
         this.moderationInit();
         //Инициализация списка поиска
         this.findInit();
+        //Инициализация списка прематчей
+        this.prematchInit();
+        //Инициализация метчей
+        this.matchInit();
     }
 }
 
 
-export const defaultService = new DefaultService();
+export const
+    defaultService = new DefaultService();

@@ -4,7 +4,7 @@ import styles from './Profile.module.css';
 import ProfileNotOk from "./ProfileNC/ProfileNotOk";
 import ProfileOK from "./ProfileOK/ProfileOK";
 import {useDispatch} from 'react-redux';
-import {metaUpdate} from "../../redux/profile/profileActions";
+import {metaUpdate} from "../../../redux/profile/profileActions";
 
 function Profile() {
     const userData = useSelector((state: any) => (state.profile.profile));

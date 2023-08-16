@@ -1,9 +1,9 @@
 import styles from './ProfileNotOk.module.css';
 import React from "react";
 import {Field, Form, Formik} from "formik";
-import {validation_profile} from "../../../validation/validation";
-import {serverAPI, URL_TOKEN_PROFILE} from "../../../api/ServerAPI";
-import {formService} from "../../../api/form/FormService";
+import {validation_profile} from "../../../../validation/validation";
+import {serverAPI, URL_TOKEN_PROFILE} from "../../../../api/ServerAPI";
+import {formService} from "../../../../api/form/FormService";
 
 function ProfileNotOk(props: any) {
 
