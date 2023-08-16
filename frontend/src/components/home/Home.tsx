@@ -8,6 +8,7 @@ import {formService} from "../../api/form/FormService";
 import {moderationService, ModerationService} from "../../api/moderation/ModerationService";
 import {findService} from "../../api/find/FindService";
 import {store} from "../../redux/store";
+import {defaultService} from "../../api/default/DefautlService";
 
 
 function Home() {
@@ -16,29 +17,20 @@ function Home() {
     const role = useSelector((state: any) => state.authLog.profileData.profile.role);
 
     const handleLogout = () => {
-        authService.logout ();
+        authService.logout();
         navigate('/');
     }
 
     const handleFind = () => {
-        setTimeout(() => {
-            const storeState = store.getState();
-            const userData = storeState.profile.profile;
-            serverAPI.requestWrapper({
-                requestType: {
-                    type: 'GET',
-                },
-                url: ((userData.goal == 'STUDENT')) ? `${URL_CORE_HOST}/profiles/prematch?goal=TEACHER&lang=${userData.program_language}&swaipUsers=false` : ((userData.goal == 'TEACHER')) ? `${URL_CORE_HOST}/profiles/prematch?goal=STUDENT&lang=${userData.program_language}&swaipUsers=false` : '',
-                body: null,
-            }).then(data => {
-                console.log(data);
-                if (data.status === 200) {
-                    findService.updateList(data.data);
-                }
-            }).catch(error => {
-                console.log(error);
-            })
-        }, 50);
+        defaultService.findInit();
+    }
+
+    const handleProfile = () => {
+        defaultService.profileInit();
+    }
+
+    const handleModeration = () => {
+        defaultService.moderationInit();
     }
 
     return (
@@ -58,19 +50,21 @@ function Home() {
                             </li>
                             <li className={styles.nav__list__item}>
                                 <NavLink to='profile'
+                                         onClick={handleProfile}
                                          className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>profile</NavLink>
                             </li>
                             {(role === 'MODER') &&
                                 <li className={styles.nav__list__item}>
                                     <NavLink to='moderation'
+                                             onClick={handleModeration}
                                              className={({isActive}) => `${isActive ? styles.activeLink : styles.link}`}>moderation</NavLink>
                                 </li>
                             }
                             <li className={styles.nav__list__item}>
                                 <a className={styles.link_nonclick}>
-                                    <span className={styles.link_span}>username:</span>
+                                    <span className={styles.link_span}>username:
                                     <br/>
-                                    {username}
+                                    <span className={styles.link_span_username}>{username}</span></span>
                                 </a>
                             </li>
                             <li className={styles.nav__list__item}><a className={styles.logout}

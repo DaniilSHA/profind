@@ -36,11 +36,7 @@ function Login() {
                 if (data.status === 204) {
                     formService.updateMeta(data.status);
                 }
-                if (data.data.status == 'VALID') {
-                    navigate('/home/find')
-                } else {
-                    navigate('/home/profile');
-                }
+                navigate('/home')
             }).catch(error => {
                 console.log(error);
             })

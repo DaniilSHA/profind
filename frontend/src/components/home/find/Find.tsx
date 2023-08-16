@@ -1,16 +1,17 @@
 import styles from "./Find.module.css"
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
-import {Form, Formik} from "formik";
-import {validation_moderation} from "../../../validation/validation";
 import {store} from "../../../redux/store";
 import Finditem from "./findItem/Finditem";
 import {serverAPI, URL_CORE_HOST} from "../../../api/ServerAPI";
 import {findService} from "../../../api/find/FindService";
+import {useNavigate} from "react-router-dom";
 
 function Find() {
     const userData = useSelector((state: any) => (state.profile.profile));
-    const [usersList, setUsersList] = useState<any[]>([]);
+    const [usersList, setUsersList] = useState<any[]>(useSelector((state: any) => (state.find)));
+    const navigate = useNavigate();
+
     setTimeout(() => {
         const storeState = store.getState();
         setUsersList(storeState.find);
@@ -20,7 +21,6 @@ function Find() {
     function isArrayEmpty(arr: any[]) {
         return arr.length === 0;
     }
-
 
 
     const prematchHandler = (type: boolean) => {
@@ -47,31 +47,57 @@ function Find() {
         }
 
         setTimeout(() => {
-            serverAPI.requestWrapper({
-                requestType: {
-                    type: 'GET',
-                },
-                url: ((userData.goal == 'STUDENT')) ? `${URL_CORE_HOST}/profiles/prematch?goal=TEACHER&lang=${userData.program_language}&swaipUsers=false` : ((userData.goal == 'TEACHER')) ? `${URL_CORE_HOST}/profiles/prematch?goal=STUDENT&lang=${userData.program_language}&swaipUsers=false` : '',
-                body: null,
-            }).then(data => {
-                console.log(data);
-                if (data.status === 200) {
-                    findService.updateList(data.data);
+            let filterGoal;
+            if (userData.status == 'VALID') {
+                switch (userData.goal) {
+                    case 'STUDENT':
+                        filterGoal = 'TEACHER';
+                        break;
+                    case 'TEACHER':
+                        filterGoal = 'STUDENT';
+                        break;
+                    case 'STARTUP_PLAYER':
+                        filterGoal = 'STARTUP_PLAYER';
+                        break;
+                    case 'STARTUP_BOSS':
+                        filterGoal = 'INVESTOR';
+                        break;
+                    case 'INVESTOR':
+                        filterGoal = 'STARTUP_BOSS';
+                        break;
+                    default:
+                        filterGoal = userData.goal;
                 }
-            }).catch(error => {
-                console.log(error);
-            })
-            setTimeout(() => {
-                const storeState = store.getState();
-                setUsersList(storeState.find);
-            }, 50);
+                serverAPI.requestWrapper({
+                    requestType: {
+                        type: 'GET',
+                    },
+                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
+                    body: null,
+                }).then(data => {
+                    console.log(data);
+                    if (data.status === 200) {
+                        findService.updateList(data.data);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+                setTimeout(() => {
+                    const storeState = store.getState();
+                    setUsersList(storeState.find);
+                }, 50);
+            }
         }, 50);
+    }
+
+    const navProfile = () => {
+        navigate('/home/profile');
     }
 
     return (
         <>
             <>
-                {!isArrayEmpty(usersList) && <div>
+                {!isArrayEmpty(usersList) && (userData.status === 'VALID') && <div>
                     <Finditem user={usersList[0]}/>
                     <div className={styles.btnsWrapper}>
                         <button type="button" className={styles.btn} onClick={() => {
@@ -86,7 +112,12 @@ function Find() {
                         </button>
                     </div>
                 </div>}
-                {isArrayEmpty(usersList) && <div className={styles.notFound}>Подходящих пользователей не найдено.</div>}
+                {isArrayEmpty(usersList) && userData.status === 'VALID' &&
+                    <div className={styles.notFound}>Подходящих пользователей не найдено.</div>}
+                {(userData.status === 'NEW' || userData.status === 'NO_VALID') &&
+                    <div className={styles.notFound1}>Ваша анкета не заполнена. Перейдите в <a onClick={navProfile}
+                                                                                               className={styles.profile_span}>profile</a>,
+                        чтобы посмотреть ваш статус, либо создать анкету.</div>}
             </>
         </>
     );

@@ -9,10 +9,7 @@ export class DefaultService {
         console.log('defaultService constructor');
     }
 
-    public init() {
-        let userData, storeState;
-
-        //Инициализация профиля
+    public profileInit() {
         serverAPI.requestWrapper({
             requestType: {
                 type: 'GET',
@@ -31,10 +28,12 @@ export class DefaultService {
         }).catch(error => {
             console.log(error);
         })
-        //Инициализация анкет модерации
-        storeState = store.getState();
+    }
+
+    public moderationInit() {
+        const storeState = store.getState();
         if (storeState.authLog.profileData.profile.role === 'MODER') {
-            setInterval(() => {
+            setTimeout(() => {
                 serverAPI.requestWrapper({
                     requestType: {
                         type: 'GET',
@@ -50,28 +49,63 @@ export class DefaultService {
                     console.log(error);
                 });
                 console.log('initModeration');
-            }, 1000);
+            }, 50);
         }
-        //Инициализация списка поиска
+    }
+
+    public findInit() {
         setTimeout(() => {
+            let userData, storeState, filterGoal;
             storeState = store.getState();
             userData = storeState.profile.profile;
-            serverAPI.requestWrapper({
-                requestType: {
-                    type: 'GET',
-                },
-                url: ((userData.goal == 'STUDENT')) ? `${URL_CORE_HOST}/profiles/prematch?goal=TEACHER&lang=${userData.program_language}&swaipUsers=false` : ((userData.goal == 'TEACHER')) ? `${URL_CORE_HOST}/profiles/prematch?goal=STUDENT&lang=${userData.program_language}&swaipUsers=false` : '',
-                body: null,
-            }).then(data => {
-                console.log(data);
-                if (data.status === 200) {
-                    findService.updateList(data.data);
+            if (userData.status == 'VALID') {
+                switch (userData.goal) {
+                    case 'STUDENT':
+                        filterGoal = 'TEACHER';
+                        break;
+                    case 'TEACHER':
+                        filterGoal = 'STUDENT';
+                        break;
+                    case 'STARTUP_PLAYER':
+                        filterGoal = 'STARTUP_PLAYER';
+                        break;
+                    case 'STARTUP_BOSS':
+                        filterGoal = 'INVESTOR';
+                        break;
+                    case 'INVESTOR':
+                        filterGoal = 'STARTUP_BOSS';
+                        break;
+                    default:
+                        filterGoal = userData.goal;
                 }
-            }).catch(error => {
-                console.log(error);
-            })
+                serverAPI.requestWrapper({
+                    requestType: {
+                        type: 'GET',
+                    },
+                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
+                    body: null,
+                }).then(data => {
+                    console.log(data);
+                    if (data.status === 200) {
+                        findService.updateList(data.data);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            }
         }, 50);
     }
+    public init() {
+        let userData, storeState, filterGoal;
+
+        //Инициализация профиля
+        this.profileInit();
+        //Инициализация анкет модерации
+        this.moderationInit();
+        //Инициализация списка поиска
+        this.findInit();
+    }
 }
+
 
 export const defaultService = new DefaultService();

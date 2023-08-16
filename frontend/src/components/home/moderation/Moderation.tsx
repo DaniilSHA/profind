@@ -7,6 +7,7 @@ import styles from "./Moderation.module.css"
 import {serverAPI, URL_TOKEN_MODERATION_PUT, URL_TOKEN_PROFILE} from "../../../api/ServerAPI";
 import {formService} from "../../../api/form/FormService";
 import {store} from "../../../redux/store";
+import {defaultService} from "../../../api/default/DefautlService";
 
 function Moderation() {
 
@@ -14,7 +15,7 @@ function Moderation() {
     setTimeout(() => {
         const storeState = store.getState();
         setUsersList(storeState.moderation);
-    }, 1000);
+    }, 100);
     const [currentId, setCurrentId] = useState(0);
 
     function isArrayEmpty(arr: []) {
@@ -48,6 +49,11 @@ function Moderation() {
         }
     }
 
+    const modHandler = () => {
+        defaultService.moderationInit();
+        setTimeout (()=>{defaultService.profileInit();},100);
+    }
+
     return (
         <>
             {!isArrayEmpty(usersList) && <div>
@@ -58,8 +64,8 @@ function Moderation() {
                         error_msg: '',
                     }}
                     onSubmit={values => {
-                        console.log('success');
                         validateHandler('NO_VALID', values.error_msg);
+                        modHandler();
                     }}
                 >
                     {({errors, touched}) => (
@@ -73,7 +79,8 @@ function Moderation() {
                             )}
                             <div className={styles.btnsWrapper}>
                                 <button type="button" className={styles.btn} onClick={() => {
-                                    validateHandler('VALID', 'Анкета прошла валидацию. Удачного пользования.')
+                                    validateHandler('VALID', 'Анкета прошла валидацию. Удачного пользования.');
+                                    modHandler();
                                 }}>VALID
                                 </button>
                                 <button className={styles.btn} type="submit">NO_VALID</button>

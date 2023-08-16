@@ -176,7 +176,7 @@ function ProfileNotOk(props: any) {
                                 </label>
                                 <div className={styles.item}>
                                     <label className={styles.formLabel}>
-                                        vk:
+                                        vk*:
                                     </label>
                                     <Field
                                         className={styles.formField}
@@ -204,7 +204,7 @@ function ProfileNotOk(props: any) {
                                 </div>
                                 <div className={styles.item}>
                                     <label className={styles.formLabel}>
-                                        phone:
+                                        phone*:
                                     </label>
                                     <Field
                                         className={styles.formField}
@@ -233,6 +233,9 @@ function ProfileNotOk(props: any) {
                                     )}
                                 </div>
                             </div>
+                        </div>
+                        <div className={styles.msg}>
+                            * - необязательно для заполнения
                         </div>
                         <button
                             className={styles.btn}
