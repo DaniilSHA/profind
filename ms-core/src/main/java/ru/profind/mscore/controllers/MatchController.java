@@ -18,7 +18,7 @@ public class MatchController
 
     @PostMapping("/match")
     @ResponseStatus(HttpStatus.OK)
-    public void savePrematch(@RequestBody MatchRequest matchRequest)
+    public void saveMatch(@RequestBody MatchRequest matchRequest)
     {
         if (matchService.exist(matchRequest.getFirstUsername(), matchRequest.getSecondUsername()))
         {
