@@ -50,7 +50,7 @@ public class PrematchService
             Prematch prematch = list.get(0);
 
             if (prematch.isComplete())
-                return;
+                throw new IllegalStateException();
 
             if (!prematch.isWasLike())
                 throw new IllegalStateException();
