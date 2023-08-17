@@ -44,11 +44,14 @@ public class ProfileService
                 })
                 .toList();
 
-        return profiles.stream()
+        List<ProfileResponse> response = profiles.stream()
                 .filter(profile -> !profile.getUsername().equals(targetUsername))
                 .filter(profile -> !usernamesWherePrematchComplete.contains(profile.getUsername()))
                 .map(this::toProfileResponse)
                 .collect(Collectors.toList());
+
+        response.addAll(getPrematchProfiles(targetUsername));
+        return response;
     }
 
     public List<ProfileResponse> getPrematchProfiles(String targetUsername)
