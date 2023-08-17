@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -23,14 +24,16 @@ public class ProfileService
     @Autowired private PrematchService prematchService;
     @Autowired private MatchService matchService;
 
-    public List<ProfileResponse> getPrematchProfiles(
+    public List<ProfileResponse> getFindProfiles(
             String targetUsername,
             ProfileGoal profileGoal,
-            ProfileProgramLang lang,
-            boolean swaipUsers,
-            Boolean wasLike
+            ProfileProgramLang lang
     )
     {
+        List<String> usernamesWherePrematchComplete = prematchService.findAll().stream()
+                .flatMap(prematch -> Stream.of(prematch.getTargetUsername(), prematch.getSwaipUsername()))
+                .toList();
+
         List<Profile> profiles = repository
                 .findAllByProfileStatusAndProfileGoal(ProfileStatus.VALID, profileGoal)
                 .stream()
@@ -41,42 +44,24 @@ public class ProfileService
                 })
                 .toList();
 
+        return profiles.stream()
+                .filter(profile -> !profile.getUsername().equals(targetUsername))
+                .filter(profile -> !usernamesWherePrematchComplete.contains(profile.getUsername()))
+                .map(this::toProfileResponse)
+                .collect(Collectors.toList());
+    }
 
-        List<Prematch> prematches = prematchService
-                .findAllWhereTargetUsername(targetUsername)
-                .stream()
-                .filter(prematch -> {
-                    if (wasLike != null) {
-                        return prematch.isWasLike() == wasLike;
-                    } else return true;
-                })
+    public List<ProfileResponse> getPrematchProfiles(String targetUsername)
+    {
+        List<String> fitUsernames = prematchService.findAllWhereSwaipUsername(targetUsername).stream()
+                .filter(prematch -> !prematch.isComplete())
+                .map(Prematch::getTargetUsername)
                 .toList();
 
-
-        if (swaipUsers) {
-            List<String> swaipUsernames = prematches
-                    .stream()
-                    .filter(prematch -> !prematch.isComplete())
-                    .map(Prematch::getSwaipUsername)
-                    .toList();
-
-            return profiles
-                    .stream()
-                    .filter(profile -> swaipUsernames.contains(profile.getUsername()))
-                    .map(this::toProfileResponse)
-                    .collect(Collectors.toList());
-        } else {
-            List<String> swaipUsernames = prematches
-                    .stream()
-                    .map(Prematch::getSwaipUsername)
-                    .toList();
-
-            return profiles
-                    .stream()
-                    .filter(profile -> !swaipUsernames.contains(profile.getUsername()))
-                    .map(this::toProfileResponse)
-                    .collect(Collectors.toList());
-        }
+        return repository.findAllWhereUsernameIn(fitUsernames)
+                .stream()
+                .map(this::toProfileResponse)
+                .collect(Collectors.toList());
     }
 
     public List<MatchAndProfileResponse> getMatchProfiles(String username) {

@@ -26,16 +26,4 @@ public class PrematchController
 
         prematchService.save(prematchRequest.getTargetUsername(), prematchRequest.getSwaipUsername(), prematchRequest.isWasLike());
     }
-
-    @PutMapping("/prematch/complete")
-    @ResponseStatus(HttpStatus.OK)
-    public void complete(@RequestBody PrematchCompleteRequest prematchRequest)
-    {
-        if (!prematchService.exist(prematchRequest.getTargetUsername(), prematchRequest.getSwaipUsername()))
-        {
-            throw new ConflictException();
-        }
-
-        prematchService.complete(prematchRequest.getTargetUsername(), prematchRequest.getSwaipUsername());
-    }
 }

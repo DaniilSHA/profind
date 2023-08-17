@@ -34,14 +34,12 @@ public class ProfileController
         }
     }
 
-    @GetMapping("/profiles/prematch")
+    @GetMapping("/profiles/find")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProfileResponse> getPrematchProfiles(
+    public List<ProfileResponse> getFindProfiles(
             HttpServletRequest request,
             @RequestParam ProfileGoal goal,
-            @RequestParam(required = false) ProfileProgramLang lang,
-            @RequestParam boolean swaipUsers,
-            @RequestParam(required = false) Boolean wasLike
+            @RequestParam(required = false) ProfileProgramLang lang
     )
     {
         Object usernameObj = request.getAttribute("username");
@@ -50,7 +48,22 @@ public class ProfileController
 
         String username = (String) usernameObj;
 
-        return profileService.getPrematchProfiles(username, goal, lang, swaipUsers, wasLike);
+        return profileService.getFindProfiles(username, goal, lang);
+    }
+
+    @GetMapping("/profiles/prematch")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProfileResponse> getPrematchProfiles(
+            HttpServletRequest request
+    )
+    {
+        Object usernameObj = request.getAttribute("username");
+        if (usernameObj == null)
+            throw new ServerException();
+
+        String username = (String) usernameObj;
+
+        return profileService.getPrematchProfiles(username);
     }
 
     @GetMapping("/profiles/match")

@@ -13,4 +13,6 @@ public interface PrematchRepository extends JpaRepository<Prematch, Long>
     List<Prematch> findAllByTargetUsernameAndSwaipUsername(String targetUsername, String swaipUsername);
 
     List<Prematch> findAllByTargetUsername(String targetUsername);
+
+    List<Prematch> findAllBySwaipUsername(String swaipUsername);
 }

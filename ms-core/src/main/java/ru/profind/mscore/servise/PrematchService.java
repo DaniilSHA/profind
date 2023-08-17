@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PrematchService
 {
     @Autowired private PrematchRepository repository;
+    @Autowired private MatchService matchService;
 
     public boolean exist(String targetUsername, String swaipUsername) {
         AtomicBoolean result = new AtomicBoolean(false);
@@ -29,23 +30,46 @@ public class PrematchService
 
     public void save(String targetUsername, String swaipUsername, boolean wasLike)
     {
-        repository.saveAndFlush(Prematch
-                .builder()
-                .targetUsername(targetUsername)
-                .swaipUsername(swaipUsername)
-                .wasLike(wasLike)
-                .isComplete(false)
-                .build());
+        List<Prematch> list = repository.findAllByTargetUsernameAndSwaipUsername(swaipUsername, targetUsername);
+
+        if (list.isEmpty())
+        {
+            repository.saveAndFlush(Prematch
+                    .builder()
+                    .targetUsername(targetUsername)
+                    .swaipUsername(swaipUsername)
+                    .wasLike(wasLike)
+                    .isComplete(!wasLike)
+                    .build());
+        }
+        else
+        {
+            if (list.size() > 1)
+                throw new IllegalStateException();
+
+            Prematch prematch = list.get(0);
+
+            if (prematch.isComplete())
+                return;
+
+            if (!prematch.isWasLike())
+                throw new IllegalStateException();
+
+            if (wasLike)
+            {
+                matchService.save(prematch.getTargetUsername(), prematch.getSwaipUsername(), false, false);
+            }
+
+            prematch.setComplete(true);
+            repository.saveAndFlush(prematch);
+        }
     }
 
-    public void complete(String targetUsername, String swaipUsername)
-    {
-        List<Prematch> list = repository.findAllByTargetUsernameAndSwaipUsername(targetUsername, swaipUsername);
-        list.forEach(prematch -> prematch.setComplete(true));
-        repository.saveAllAndFlush(list);
+    public List<Prematch> findAllWhereSwaipUsername(String swaipUsername) {
+        return repository.findAllBySwaipUsername(swaipUsername);
     }
 
-    public List<Prematch> findAllWhereTargetUsername(String targetUsername) {
-        return repository.findAllByTargetUsername(targetUsername);
+    public List<Prematch> findAll() {
+        return repository.findAll();
     }
 }

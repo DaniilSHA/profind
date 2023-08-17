@@ -1,6 +1,8 @@
 package ru.profind.mscore.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.profind.mscore.domain.Profile;
 import ru.profind.mscore.domain.ProfileGoal;
 import ru.profind.mscore.domain.ProfileStatus;
@@ -15,4 +17,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long>
     List<Profile> findAllByProfileStatus(ProfileStatus profileStatus);
 
     List<Profile> findAllByProfileStatusAndProfileGoal(ProfileStatus profileStatus, ProfileGoal profileGoal);
+
+    @Query("select p from Profile p where p.username in :usernames")
+    List<Profile> findAllWhereUsernameIn(@Param("usernames") List<String> usernames);
 }
