@@ -28,31 +28,7 @@ function Matches() {
         setPrematch(!prematch);
     }
 
-    const prematchCompleteHandler = () => {
-        const storeState = store.getState();
-        const currentUser = storeState.authLog.profileData.profile.username;
-        if (!isArrayEmpty(usersList)) {
-            serverAPI.requestWrapper({
-                requestType: {
-                    type: 'PUT',
-                },
-                url: `${URL_CORE_HOST}/prematch/complete`,
-                body: {
-                    "targetUsername": currentUser,
-                    "swaipUsername": usersList[0].username,
-                    "wasLike": true,
-                },
-            }).then(data => {
-                if (data.status === 200) {
-                    defaultService.prematchInit();
-                }
-            }).catch(error => {
-                console.log(error);
-            })
-        }
-    }
-
-    const matchHandler = () => {
+    const prematchCompleteHandler = (wasLike: boolean) => {
         const storeState = store.getState();
         const currentUser = storeState.authLog.profileData.profile.username;
         if (!isArrayEmpty(usersList)) {
@@ -60,16 +36,16 @@ function Matches() {
                 requestType: {
                     type: 'POST',
                 },
-                url: `${URL_CORE_HOST}/match`,
+                url: `${URL_CORE_HOST}/prematch`,
                 body: {
-                    "firstUsername": currentUser,
-                    "paymentFirst": false,
-                    "secondUsername": usersList[0].username,
-                    "paymentSecond": false,
+                    "targetUsername": currentUser,
+                    "swaipUsername": usersList[0].username,
+                    "wasLike": wasLike,
                 },
             }).then(data => {
                 if (data.status === 200) {
-                    defaultService.matchInit();
+                    defaultService.prematchInit();
+                    defaultService.findInit();
                 }
             }).catch(error => {
                 console.log(error);
@@ -88,13 +64,12 @@ function Matches() {
                     <Prematchesitem user={usersList[0]}/>
                     <div className={styles.btns_wrapper}>
                         <button type="button" className={styles.btn} onClick={() => {
-                            prematchCompleteHandler();
-                            matchHandler();
+                            prematchCompleteHandler(true);
                             console.log('success');
                         }}>+
                         </button>
                         <button className={styles.btn} onClick={() => {
-                            prematchCompleteHandler();
+                            prematchCompleteHandler(false);
                             console.log('fail');
                         }} type="button">-
                         </button>
