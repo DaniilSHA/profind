@@ -82,7 +82,7 @@ export class DefaultService {
                     requestType: {
                         type: 'GET',
                     },
-                    url: (filterGoal === 'INVESTOR') ? `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&swaipUsers=false` : `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&lang=${userData.program_language}&swaipUsers=false`,
+                    url: (filterGoal === 'INVESTOR') ? `${URL_CORE_HOST}/profiles/find?goal=${filterGoal}` : `${URL_CORE_HOST}/profiles/find?goal=${filterGoal}&lang=${userData.program_language}`,
                     body: null,
                 }).then(data => {
                     if (data.status === 200) {
@@ -97,34 +97,12 @@ export class DefaultService {
 
     public prematchInit() {
         setTimeout(() => {
-            let userData, storeState, filterGoal;
-            storeState = store.getState();
-            userData = storeState.profile.profile;
-            if (userData.status == 'VALID') {
-                switch (userData.goal) {
-                    case 'STUDENT':
-                        filterGoal = 'TEACHER';
-                        break;
-                    case 'TEACHER':
-                        filterGoal = 'STUDENT';
-                        break;
-                    case 'STARTUP_PLAYER':
-                        filterGoal = 'STARTUP_PLAYER';
-                        break;
-                    case 'STARTUP_BOSS':
-                        filterGoal = 'INVESTOR';
-                        break;
-                    case 'INVESTOR':
-                        filterGoal = 'STARTUP_BOSS';
-                        break;
-                    default:
-                        filterGoal = userData.goal;
-                }
+            {
                 serverAPI.requestWrapper({
                     requestType: {
                         type: 'GET',
                     },
-                    url: `${URL_CORE_HOST}/profiles/prematch?goal=${filterGoal}&swaipUsers=true&wasLike=true`,
+                    url: `${URL_CORE_HOST}/profiles/prematch`,
                     body: null,
                 }).then(data => {
                     if (data.status === 200) {

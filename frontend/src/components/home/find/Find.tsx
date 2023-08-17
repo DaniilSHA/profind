@@ -22,8 +22,7 @@ function Find() {
         return arr.length === 0;
     }
 
-
-    const prematchHandler = (type: boolean) => {
+    const prematchHandler = (wasLike: boolean) => {
         const storeState = store.getState();
         const currentUser = storeState.authLog.profileData.profile.username;
         if (!isArrayEmpty(usersList)) {
@@ -33,13 +32,14 @@ function Find() {
                 },
                 url: `${URL_CORE_HOST}/prematch`,
                 body: {
-                    "targetUsername": usersList[0].username,
-                    "swaipUsername": currentUser,
-                    "wasLike": type,
+                    "targetUsername":currentUser,
+                    "swaipUsername":  usersList[0].username,
+                    "wasLike": wasLike,
                 },
             }).then(data => {
                 if (data.status === 200) {
                     defaultService.findInit();
+                    defaultService.prematchInit();
                 }
             }).catch(error => {
                 console.log(error);
