@@ -51,7 +51,11 @@ function Moderation() {
 
     const modHandler = () => {
         defaultService.moderationInit();
-        setTimeout (()=>{defaultService.profileInit();},100);
+        setTimeout(() => {
+            defaultService.profileInit();
+            defaultService.findInit()
+        }, 100);
+
     }
 
     return (
