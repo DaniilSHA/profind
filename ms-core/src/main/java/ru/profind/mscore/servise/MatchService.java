@@ -52,21 +52,28 @@ public class MatchService
         List<Match> list1 = repository.findAllByFirstUsernameAndSecondUsername(firstUsername, secondUsername);
 
         if (!list1.isEmpty()) {
-            list1.forEach(match -> {
-                match.setPaymentFirst(paymentFirst);
-                match.setPaymentSecond(paymentSecond);
-            });
-            repository.saveAllAndFlush(list1);
+
+            if (list1.size() > 1)
+                throw new IllegalStateException();
+
+            Match match = list1.get(0);
+            match.setPaymentFirst(paymentFirst);
+            match.setPaymentSecond(paymentSecond);
+            repository.saveAndFlush(match);
+            return;
         }
 
         List<Match> list2 = repository.findAllByFirstUsernameAndSecondUsername(secondUsername, firstUsername);
 
         if (!list2.isEmpty()) {
-            list2.forEach(match -> {
-                match.setPaymentFirst(paymentSecond);
-                match.setPaymentSecond(paymentFirst);
-            });
-            repository.saveAllAndFlush(list2);
+
+            if (list2.size() > 1)
+                throw new IllegalStateException();
+
+            Match match = list2.get(0);
+            match.setPaymentFirst(paymentFirst);
+            match.setPaymentSecond(paymentSecond);
+            repository.saveAndFlush(match);
         }
     }
 
@@ -74,6 +81,6 @@ public class MatchService
         return repository.findAllByFirstUsername(firstUsername);
     }
     public List<Match> findBySecondUsername(String secondUsername) {
-        return repository.findAllByFirstUsername(secondUsername);
+        return repository.findAllBySecondUsername(secondUsername);
     }
 }
