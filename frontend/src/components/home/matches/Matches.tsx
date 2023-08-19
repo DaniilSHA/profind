@@ -16,50 +16,11 @@ function Matches() {
     const [match, setMatch] = useState(false);
     const userData = useSelector((state: any) => (state.profile.profile));
     const [prematchList, setPrematchList] = useState<any[]>(useSelector((state: any) => (state.prematch)));
-    //const [matchList, setMatchList] = useState<any[]>(useSelector((state: any) => (state.match)));
-    const matchList = [
-        {
-            username: 'mara#1',
-            name: 'Марат',
-            about: 'Студент, 20',
-            goal: 'TEACHER',
-            program_language: 'JAVA',
-            contact: {
-                vk: null,
-                telegram: '@tiltclown',
-                phone: null,
-                email: 'shakhmovedev@mail.ru',
-            },
-        },
-        {
-            username: 'mara#2',
-            name: 'Марат',
-            about: 'Студент, 20',
-            goal: 'TEACHER',
-            program_language: 'JAVA',
-            contact: {
-                vk: null,
-                telegram: '@tiltclown',
-                phone: null,
-                email: 'shakhmovedev@mail.ru',
-            }
-        }, {
-            username: 'mara#3',
-            name: 'Марат',
-            about: 'Студент, 20',
-            goal: 'TEACHER',
-            program_language: 'JAVA',
-            contact: {
-                vk: null,
-                telegram: '@tiltclown',
-                phone: null,
-                email: 'shakhmovedev@mail.ru',
-            }
-        }]
+    const [matchList, setMatchList] = useState<any[]>(useSelector((state: any) => (state.match)));
     setTimeout(() => {
         const storeState = store.getState();
         setPrematchList(storeState.prematch);
-        //setMatchList(storeState.match);
+        setMatchList(storeState.match);
     }, 100);
 
 
@@ -136,8 +97,8 @@ function Matches() {
                 {match && <div className={styles.prematch_wrapper}>
                     {!isArrayEmpty(matchList) && (userData.status === 'VALID') && <div className={styles.match_wrapper}>
                         {matchList.map((el => {
-                            return <div key={el.username}>
-                                <Matchesitem userInfo={el}/>
+                            return <div key={el.profile.username}>
+                                <Matchesitem userInfo={el.profile} userMatch={el.match}/>
                             </div>
                         }))}
                     </div>}
