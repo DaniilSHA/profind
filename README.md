@@ -44,6 +44,6 @@
 
 ### 3. Запуск frontend - для запуска необходимо установить node js версии 18.17.1. Дла в терминале перейти в папку frontend (cd ./frontend) и в ней прописать команду (npm start)
 
-###<hr>
+### <hr>
 
 # Author by: <br> Shakhmovedev Marat Andreevich - frontend, <br> Shakhmovedev Daniil Andreevich - backend
